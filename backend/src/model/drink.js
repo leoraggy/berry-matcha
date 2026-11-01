@@ -9,7 +9,7 @@ const drinkSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  description: {
+  category: {
     type: String,
     required: true,
   },

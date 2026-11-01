@@ -1,0 +1,53 @@
+.owner-container {
+  position: relative;
+  margin: 0;
+  background-color: #fed9e9;
+  padding-top: 2rem;
+  padding-bottom: 1px;
+  z-index: -1;
+}
+
+.section {
+  margin: 3rem 15%;
+}
+
+.owner {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 0 3rem;
+}
+
+.owner-text {
+  color: rgb(121, 98, 102);
+}
+
+span {
+  font-weight: bold;
+}
+
+.description {
+  color: rgb(53, 91, 53);
+  transition: color 160ms ease;
+}
+
+.read-more {
+  text-align: center;
+  text-decoration: none;
+  color: rgb(121, 98, 102);
+  padding: 0;
+  margin: 0;
+}
+
+.read-more:hover {
+  color: white;
+}
+
+.kitchen {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.logo {
+  margin: 0;
+}

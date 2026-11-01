@@ -1,0 +1,19 @@
+.loading {
+  display: block;
+  margin: auto;
+  margin-top: 10%;
+  color: #345b35;
+}
+
+.error {
+  display: flex;
+  margin-top: 10%;
+  flex-direction: column;
+  text-align: center;
+  color: #345b35;
+  justify-content: center;
+}
+
+#error-image {
+  margin: auto;
+}

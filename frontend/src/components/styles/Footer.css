@@ -1,0 +1,35 @@
+footer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  background-color: #b1c39f;
+  color: white;
+}
+
+footer > img {
+  grid-area: 1 / 1;
+}
+
+.contact {
+  grid-area: 2 / 1;
+}
+
+.hours {
+  grid-area: 2 / 2;
+}
+
+.grid-item {
+  display: block;
+  margin: auto;
+  justify-content: center;
+}
+
+.contact,
+.hours {
+  align-self: start;
+  margin: 0 auto;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}

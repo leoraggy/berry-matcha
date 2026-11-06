@@ -2,7 +2,15 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 2rem;
-  margin: 1rem 10% 0 10%;
+  margin: 1rem 15% 0 15%;
+}
+
+.instagram {
+  color: white;
+}
+
+.instagram a {
+  text-decoration: underline;
 }
 
 .grid-container img {

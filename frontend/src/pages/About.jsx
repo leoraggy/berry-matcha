@@ -1,11 +1,12 @@
 import "/headshot.jpg";
 import "/kitchen.jpg";
 import "./styles/About.css";
+import RevealOnScroll from "../components/RevealOnScroll";
 function About() {
   return (
     <>
       <title>Berry Matcha | About The Owner</title>
-      <div className="owner-container">
+      <RevealOnScroll className="owner-container">
         <div className="section">
           <div className="owner">
             <div>
@@ -28,10 +29,10 @@ function About() {
         <a class="read-more" href="#description">
           <h4>Read More ▼</h4>
         </a>
-      </div>
+      </RevealOnScroll>
 
       <div className="description" id="description">
-        <div className="section">
+        <RevealOnScroll className="section">
           <h2>Why My Matcha</h2>
           <p>
             I focus on bold/balanced flavors, creamy/refreshing teaxtures, and
@@ -55,9 +56,9 @@ function About() {
             alt="image of kitchen"
             width={1000}
           />
-        </div>
+        </RevealOnScroll>
 
-        <div className="section">
+        <RevealOnScroll className="section">
           <h2>FAQ</h2>
           <p>
             <span>Q:</span> Do you take delivery?
@@ -87,7 +88,7 @@ function About() {
           <p>
             <span>A:</span> Yes, at checkout you can adjust!
           </p>
-        </div>
+        </RevealOnScroll>
       </div>
     </>
   );

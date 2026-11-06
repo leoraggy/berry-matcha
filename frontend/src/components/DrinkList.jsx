@@ -16,12 +16,12 @@ function DrinkList({ drinks }) {
       <div className="drink-list">
         {matchaDrinks.map((drink) => (
           <div className="drink-card" key={drink._id}>
-            <img src="/boba.jpg" alt="img of drink" />
+            <img src={drink.imageLink} alt="img of drink" />
 
             <h4 className="drink-name">{drink.name}</h4>
             <div className="price-details">
               <p>${drink.price.toFixed(2)}</p>
-              <Link className="view-details" to={`/menu/${drink.name}`}>
+              <Link className="view-details" to={`/menu/${drink._id}`}>
                 View Details
               </Link>
             </div>
@@ -35,7 +35,7 @@ function DrinkList({ drinks }) {
       <div className="drink-list">
         {teaDrinks.map((drink) => (
           <div className="drink-card" key={drink._id}>
-            <img src="/boba.jpg" alt="img of drink" />
+            <img src={drink.imageLink} alt="img of drink" />
 
             <h4 className="drink-name">{drink.name}</h4>
             <div className="price-details">

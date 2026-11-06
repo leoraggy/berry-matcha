@@ -28,6 +28,8 @@ span {
 .description {
   color: rgb(53, 91, 53);
   transition: color 160ms ease;
+  position: relative;
+  z-index: 10;
 }
 
 .read-more {

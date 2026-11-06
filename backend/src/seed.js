@@ -10,36 +10,49 @@ const drinks = [
     name: "Iced Matcha Latte",
     price: 6.0,
     category: "Matcha",
+    imageLink:
+      "https://storage.googleapis.com/berry-matcha-photos/regular-matcha.png",
   },
   {
     name: "Iced Coconut Matcha Latte",
     price: 6.0,
     category: "Matcha",
+    imageLink:
+      "https://storage.googleapis.com/berry-matcha-photos/coconut-matcha-fake.jpg",
   },
   {
     name: "Iced Strawberry Matcha Latte",
     price: 6.0,
     category: "Matcha",
+    imageLink:
+      "https://storage.googleapis.com/berry-matcha-photos/strawberry-matcha-2.jpg",
   },
   {
     name: "Iced Banana Matcha Latte",
     price: 6.0,
     category: "Matcha",
+    imageLink:
+      "https://storage.googleapis.com/berry-matcha-photos/banana-bread.jpg",
   },
   {
     name: "Iced Jasmine Matcha Latte",
     price: 6.0,
     category: "Matcha",
+    imageLink: "https://storage.googleapis.com/berry-matcha-photos/jasmine.jpg",
   },
   {
     name: "Iced Thai Tea",
     price: 6.0,
     category: "Tea",
+    imageLink:
+      "https://storage.googleapis.com/berry-matcha-photos/thai-tea.jpg",
   },
   {
     name: "Iced Coconut Thai Tea",
     price: 6.0,
     category: "Tea",
+    imageLink:
+      "https://storage.googleapis.com/berry-matcha-photos/coconut-thai.jpg",
   },
 ];
 

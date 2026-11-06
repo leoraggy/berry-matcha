@@ -24,6 +24,11 @@
   width: 250px;
   margin: auto;
   margin-bottom: 1rem;
+  transition: transform 500ms ease;
+}
+
+.drink-card:hover {
+  transform: scale(1.035);
 }
 
 .price-details {

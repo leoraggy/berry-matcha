@@ -1,11 +1,9 @@
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./styles/NavBar.css";
 import "/berrymatcha.png";
 import "/cart.png";
 import "/carthover.png";
-import Footer from "./Footer";
 function NavBar() {
-  const location = useLocation();
   return (
     <div>
       <nav className="nav-bar">
@@ -46,10 +44,6 @@ function NavBar() {
           </Link>
         </div>
       </nav>
-      <main className="main-content">
-        <Outlet />
-      </main>
-      <Footer />
     </div>
   );
 }

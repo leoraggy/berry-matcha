@@ -1,9 +1,10 @@
 import DrinkRepository from "../data/drinkRepository";
 import { useCallback, useEffect, useState } from "react";
 import DrinkList from "../components/DrinkList";
-import "/loading.gif";
+import Loading from "../components/Loading";
+import Error from "../components/Error";
 import "./styles/Menu.css";
-import "/error.png";
+
 const drinkRepo = new DrinkRepository();
 
 function Menu() {
@@ -30,18 +31,11 @@ function Menu() {
   }, [fetchDrinks]);
 
   if (loading) {
-    return (
-      <img src="loading.gif" alt="loading..." className="loading" width={200} />
-    );
+    return <Loading />;
   }
 
   if (error) {
-    return (
-      <div className="error">
-        <h3>{error}</h3>
-        <img src="error.png" alt="error image" width={200} id="error-image" />
-      </div>
-    );
+    return <Error error={error} />;
   }
 
   return (

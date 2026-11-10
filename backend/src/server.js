@@ -4,6 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import drinkRouter from "./routes/drinkRoutes.js";
 import hoursRouter from "./routes/hoursRoutes.js";
+import orderRouter from "./routes/orderRoutes.js";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/drinks", drinkRouter);
 app.use("/api/hours", hoursRouter);
+app.use("/api/orders", orderRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

@@ -1,324 +1,498 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import DrinkRepository from "../data/drinkRepository";
+import OrderRepository from "../data/orderRepository";
 import "./styles/Order.css";
-
-const drinkRepo = new DrinkRepository();
-const MAX_DRINKS = 5;
+import Loading from "../components/Loading";
+import Error from "../components/Error";
 
 function Order() {
+  const drinkRepo = new DrinkRepository();
+  const orderRepo = new OrderRepository();
+  const MAX_DRINKS = 5;
   const [drinks, setDrinks] = useState([]);
-  const [orderItems, setOrderItems] = useState([]);
-  const [drinkPreferences, setDrinkPreferences] = useState({});
-  const nextItemId = useRef(0);
+  const [pickupHours, setPickupHours] = useState([]);
+  const [drinkOptions, setDrinkOptions] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState("");
+  const [formData, setFormData] = useState({
+    customerName: "",
+    phoneNumber: "",
+    customerEmail: "",
+    totalPrice: "",
+    pickupDate: "",
+    pickupTime: "",
+    drinks: [],
+  });
 
   const matchaDrinks = drinks.filter((drink) => {
-    return drink.category == "Matcha";
+    return drink.category == "Matcha" && drink.isAvailable == true;
   });
 
   const teaDrinks = drinks.filter((drink) => {
-    return drink.category == "Tea";
+    return drink.category == "Tea" && drink.isAvailable == true;
   });
 
-  useEffect(() => {
-    let isCurrent = true;
-    drinkRepo
-      .getAllDrinks()
-      .then((data) => {
-        if (isCurrent) {
-          setDrinks(data);
-          setError(null);
-        }
-      })
-      .catch((error) => {
-        if (isCurrent) {
-          setError("Sorry, we couldn't load the menu. Please try again.");
-          console.error(error);
-        }
-      })
-      .finally(() => {
-        if (isCurrent) {
-          setLoading(false);
-        }
-      });
-
-    return () => {
-      isCurrent = false;
-    };
+  const fetchDrinks = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const [drinkData, hoursResponse] = await Promise.all([
+        drinkRepo.getAllDrinks(),
+        fetch(`${import.meta.env.VITE_API_URL}/hours`),
+      ]);
+      const hoursData = await hoursResponse.json();
+      if (!hoursResponse.ok) {
+        throw new Error(hoursData.message || "Unable to load pickup hours.");
+      }
+      setDrinks(drinkData);
+      setPickupHours(hoursData);
+    } catch (error) {
+      setError("Sorry, an error occured. Please try again. Matcha spilled.");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const retryLoadingDrinks = () => {
-    setLoading(true);
-    setError(null);
-    drinkRepo
-      .getAllDrinks()
-      .then(setDrinks)
-      .catch((error) => {
-        setError("Sorry, we couldn't load the menu. Please try again.");
-        console.error(error);
-      })
-      .finally(() => setLoading(false));
-  };
+  useEffect(() => {
+    fetchDrinks();
+  }, [fetchDrinks]);
 
-  const totalDrinks = orderItems.length;
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <Error error={error} />;
+  }
+
+  const orderItems = formData.drinks;
+  const totalDrinks = orderItems.reduce(
+    (total, item) => total + item.quantity,
+    0,
+  );
+
   const totalPrice = orderItems.reduce((total, item) => {
-    const drink = drinks.find(
-      (availableDrink) => availableDrink._id === item.drinkId,
-    );
-    return total + (drink ? Number(drink.price) : 0);
+    return total + item.price * item.quantity;
   }, 0);
 
-  const addDrink = (drinkId) => {
-    const id = nextItemId.current++;
-    const preferences = drinkPreferences[drinkId] ?? {
-      sugar: "full",
-      ice: "full",
-    };
-
-    setOrderItems((currentItems) => {
-      if (currentItems.length >= MAX_DRINKS) {
-        return currentItems;
+  const formatLocalDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+  const today = formatLocalDate(new Date());
+  const dayLabels = ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"];
+  const selectedDate = formData.pickupDate
+    ? new Date(`${formData.pickupDate}T00:00:00`)
+    : null;
+  const selectedDayHours = selectedDate
+    ? pickupHours.find(
+        (entry) => entry.dayOfTheWeek === dayLabels[selectedDate.getDay()],
+      )?.hours
+    : null;
+  const pickupTimeOptions = [];
+  if (selectedDayHours && selectedDayHours.toLowerCase() !== "closed") {
+    for (const range of selectedDayHours.split(",")) {
+      const match = range
+        .trim()
+        .match(
+          /^(\d{1,2}):(\d{2})\s*(am|pm)\s*-\s*(\d{1,2}):(\d{2})\s*(am|pm)$/i,
+        );
+      if (!match) {
+        continue;
       }
+      const toMinutes = (hour, minute, meridiem) =>
+        ((Number(hour) % 12) + (meridiem.toLowerCase() === "pm" ? 12 : 0)) *
+          60 +
+        Number(minute);
+      const start = toMinutes(match[1], match[2], match[3]);
+      const end = toMinutes(match[4], match[5], match[6]);
+      for (let time = start; time < end; time += 30) {
+        const hour24 = Math.floor(time / 60);
+        const hour12 = hour24 % 12 || 12;
+        const minute = String(time % 60).padStart(2, "0");
+        const meridiem = hour24 < 12 ? "AM" : "PM";
+        const value = `${String(hour24).padStart(2, "0")}:${minute}`;
+        if (
+          formData.pickupDate !== today ||
+          time > new Date().getHours() * 60 + new Date().getMinutes()
+        ) {
+          pickupTimeOptions.push({
+            value,
+            label: `${hour12}:${minute} ${meridiem}`,
+          });
+        }
+      }
+    }
+  }
 
-      return [
-        ...currentItems,
-        {
-          id,
-          drinkId,
-          sugar: preferences.sugar,
-          ice: preferences.ice,
-        },
-      ];
-    });
+  const updateDrinkOption = (drinkId, option, value) => {
+    setDrinkOptions((currentOptions) => ({
+      ...currentOptions,
+      [drinkId]: {
+        sugar: "Full",
+        ice: "Normal",
+        ...currentOptions[drinkId],
+        [option]: value,
+      },
+    }));
   };
 
-  const updatePreference = (drinkId, preference, value) => {
-    setDrinkPreferences((currentPreferences) => ({
-      ...currentPreferences,
-      [drinkId]: {
-        sugar: currentPreferences[drinkId]?.sugar ?? "full",
-        ice: currentPreferences[drinkId]?.ice ?? "full",
-        [preference]: value,
-      },
+  const addDrinkToList = (drink) => {
+    const options = drinkOptions[drink._id] ?? {
+      sugar: "Full",
+      ice: "Normal",
+    };
+
+    setFormData((currentData) => ({
+      ...currentData,
+      drinks: [
+        ...currentData.drinks,
+        {
+          drinkId: drink._id,
+          name: drink.name,
+          price: Number(drink.price),
+          quantity: 1,
+          sugar: options.sugar,
+          ice: options.ice,
+        },
+      ],
+    }));
+  };
+
+  const removeDrinkFromList = (indexToRemove) => {
+    setFormData((currentData) => ({
+      ...currentData,
+      drinks: currentData.drinks.filter((_, index) => index !== indexToRemove),
     }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const submittedFields = new FormData(event.currentTarget);
+    const order = {
+      customerName:
+        `${submittedFields.get("firstName")} ${submittedFields.get("lastName")}`.trim(),
+      phoneNumber: submittedFields.get("phone"),
+      customerEmail: submittedFields.get("email"),
+      totalPrice: Number(totalPrice.toFixed(2)),
+      pickupDate: formData.pickupDate,
+      pickupTime: formData.pickupTime,
+      drinks: orderItems,
+    };
+
+    console.log(order);
   };
 
   return (
     <div className="order-page">
       <div className="order-container">
         <title>Berry Matcha | Order</title>
-        <header className="order-header">
-          <h1>Place an order</h1>
-        </header>
-        <form
-          className="order-form"
-          onSubmit={handleSubmit}
-          onChange={() => setMessage("")}
-        >
-          <div className="order-section">
-            <div className="customer-fields">
-              <label>
-                First name
-                <input
-                  type="text"
-                  name="firstName"
-                  autoComplete="given-name"
-                  required
-                />
-              </label>
-              <label>
-                Last initial
-                <input
-                  type="text"
-                  name="lastInitial"
-                  maxLength={1}
-                  autoComplete="family-name"
-                  required
-                />
-              </label>
-              <label>
-                Email
-                <input
-                  type="email"
-                  name="email"
-                  autoComplete="email"
-                  required
-                />
-              </label>
-              <label>
-                Phone number
-                <input type="tel" name="phone" autoComplete="tel" required />
-              </label>
-            </div>
-          </div>
-          <div className="order-section">
-            <div className="order-section-heading">
-              <div>
-                <h2 id="drinks-heading">Choose your drinks</h2>
-                <p>Add up to {MAX_DRINKS} drinks to your order.</p>
+        <div className="order-section" id="big-order-section">
+          <header className="order-header">
+            <h1 id="order-header">Place Order</h1>
+          </header>
+          <form className="order-form" onSubmit={handleSubmit}>
+            <div className="order-section">
+              <div className="customer-fields">
+                <label>
+                  First name
+                  <input type="text" name="firstName" required />
+                </label>
+                <label>
+                  Last name
+                  <input type="text" name="lastName" required />
+                </label>
+                <label>
+                  Email
+                  <input type="email" name="email" required />
+                </label>
+                <label>
+                  Phone number
+                  <input type="tel" name="phone" required />
+                </label>
               </div>
-              <span className="drink-limit">
-                {totalDrinks} / {MAX_DRINKS}
-              </span>
             </div>
-            <div class="line-container">
-              <span class="line-text">Matcha</span>
-            </div>
-            <div className="order-drink-list">
-              {matchaDrinks.map((drink) => {
-                const quantity = orderItems.filter(
-                  (item) => item.drinkId === drink._id,
-                ).length;
-                const preferences = drinkPreferences[drink._id] ?? {
-                  sugar: "full",
-                  ice: "full",
-                };
-                return (
-                  <article
-                    className={`order-drink-card${quantity > 0 ? " is-selected" : ""}`}
-                    key={drink._id}
+            <div className="order-section">
+              <div className="order-section-heading">
+                <div>
+                  <h2>Pickup details</h2>
+                  <p>Choose a date and an available time slot.</p>
+                </div>
+              </div>
+              <div className="pickup-fields">
+                <label>
+                  Pickup date
+                  <input
+                    type="date"
+                    name="pickupDate"
+                    min={today}
+                    required
+                    value={formData.pickupDate}
+                    onChange={(event) =>
+                      setFormData((currentData) => ({
+                        ...currentData,
+                        pickupDate: event.target.value,
+                        pickupTime: "",
+                      }))
+                    }
+                  />
+                </label>
+                <label>
+                  Pickup time
+                  <select
+                    name="pickupTime"
+                    required
+                    value={formData.pickupTime}
+                    disabled={
+                      !formData.pickupDate || pickupTimeOptions.length === 0
+                    }
+                    onChange={(event) =>
+                      setFormData((currentData) => ({
+                        ...currentData,
+                        pickupTime: event.target.value,
+                      }))
+                    }
                   >
-                    <img src={drink.imageLink} alt={drink.name} />
-                    <div className="order-drink-info">
-                      <div className="order-drink-title">
-                        <div>
-                          <h3>{drink.name}</h3>
-                          <p>{drink.category}</p>
+                    <option value="">
+                      {!formData.pickupDate
+                        ? "Select a date first"
+                        : pickupTimeOptions.length
+                          ? "Select a pickup time"
+                          : "No pickup times available"}
+                    </option>
+                    {pickupTimeOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div className="order-section">
+              <div className="order-section-heading">
+                <div>
+                  <h2 id="drinks-heading">Choose your drinks</h2>
+                  <p>Add up to {MAX_DRINKS} drinks to your order.</p>
+                </div>
+                <span className="drink-limit">
+                  {totalDrinks} / {MAX_DRINKS}
+                </span>
+              </div>
+              <div className="line-container">
+                <span className="line-text">Matcha</span>
+              </div>
+              <div className="order-drink-list">
+                {matchaDrinks.map((drink) => {
+                  const addedQuantity = orderItems
+                    .filter((item) => item.drinkId === drink._id)
+                    .reduce((total, item) => total + item.quantity, 0);
+                  const options = drinkOptions[drink._id] ?? {
+                    sugar: "Full",
+                    ice: "Normal",
+                  };
+                  return (
+                    <article
+                      className={`order-drink-card${addedQuantity > 0 ? " is-selected" : ""}`}
+                      key={drink._id}
+                    >
+                      <img src={drink.imageLink} alt={drink.name} />
+                      <div className="order-drink-info">
+                        <div className="order-drink-title">
+                          <div>
+                            <h3>{drink.name}</h3>
+                            <p>{drink.category}</p>
+                          </div>
+                          <span>${Number(drink.price).toFixed(2)}</span>
                         </div>
-                        <span>${Number(drink.price).toFixed(2)}</span>
-                      </div>
-                      <div className="drink-options">
-                        <label>
-                          Sugar
-                          <select
-                            value={preferences.sugar}
-                            aria-label={`Sugar for ${drink.name} to add`}
-                            onChange={(event) =>
-                              updatePreference(
-                                drink._id,
-                                "sugar",
-                                event.target.value,
-                              )
-                            }
+                        <div className="drink-options">
+                          <div className="drink-options-1">
+                            <label>
+                              Sugar
+                              <select
+                                value={options.sugar}
+                                onChange={(event) =>
+                                  updateDrinkOption(
+                                    drink._id,
+                                    "sugar",
+                                    event.target.value,
+                                  )
+                                }
+                              >
+                                <option value="Full">Full</option>
+                                <option value="Half">Half</option>
+                                <option value="Zero">Zero</option>
+                              </select>
+                            </label>
+                            <label>
+                              Ice
+                              <select
+                                value={options.ice}
+                                onChange={(event) =>
+                                  updateDrinkOption(
+                                    drink._id,
+                                    "ice",
+                                    event.target.value,
+                                  )
+                                }
+                              >
+                                <option value="Normal">Normal</option>
+                                <option value="Less">Less</option>
+                                <option value="No">No</option>
+                              </select>
+                            </label>
+                          </div>
+                          <button
+                            type="button"
+                            className="add-drink-button"
+                            onClick={() => addDrinkToList(drink)}
+                            disabled={totalDrinks >= MAX_DRINKS}
                           >
-                            <option value="full">Full</option>
-                            <option value="half">Half</option>
-                            <option value="zero">Zero</option>
-                          </select>
-                        </label>
-                        <label>
-                          Ice
-                          <select
-                            value={preferences.ice}
-                            onChange={(event) =>
-                              updatePreference(
-                                drink._id,
-                                "ice",
-                                event.target.value,
-                              )
-                            }
-                          >
-                            <option value="normal">Normal</option>
-                            <option value="less">Less</option>
-                          </select>
-                        </label>
-                        <button
-                          type="button"
-                          className="add-drink-button"
-                          onClick={() => addDrink(drink._id)}
-                          disabled={totalDrinks >= MAX_DRINKS}
-                        >
-                          + Add drink
-                        </button>
-                      </div>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-            <div class="line-container">
-              <span class="line-text">Tea </span>
-            </div>
-            <div className="order-drink-list">
-              {teaDrinks.map((drink) => {
-                const quantity = orderItems.filter(
-                  (item) => item.drinkId === drink._id,
-                ).length;
-                const preferences = drinkPreferences[drink._id] ?? {
-                  sugar: "full",
-                  ice: "full",
-                };
-                return (
-                  <article
-                    className={`order-drink-card${quantity > 0 ? " is-selected" : ""}`}
-                    key={drink._id}
-                  >
-                    <img src={drink.imageLink} alt={drink.name} />
-                    <div className="order-drink-info">
-                      <div className="order-drink-title">
-                        <div>
-                          <h3>{drink.name}</h3>
-                          <p>{drink.category}</p>
+                            + Add drink
+                          </button>
                         </div>
-                        <span>${Number(drink.price).toFixed(2)}</span>
                       </div>
-                      <div className="drink-options">
-                        <label>
-                          Sugar
-                          <select
-                            value={preferences.sugar}
-                            aria-label={`Sugar for ${drink.name} to add`}
-                            onChange={(event) =>
-                              updatePreference(
-                                drink._id,
-                                "sugar",
-                                event.target.value,
-                              )
-                            }
+                    </article>
+                  );
+                })}
+              </div>
+              <div className="line-container">
+                <span className="line-text">Tea</span>
+              </div>
+              <div className="order-drink-list">
+                {teaDrinks.map((drink) => {
+                  const addedQuantity = orderItems
+                    .filter((item) => item.drinkId === drink._id)
+                    .reduce((total, item) => total + item.quantity, 0);
+                  const options = drinkOptions[drink._id] ?? {
+                    sugar: "Full",
+                    ice: "Normal",
+                  };
+                  return (
+                    <article
+                      className={`order-drink-card${addedQuantity > 0 ? " is-selected" : ""}`}
+                      key={drink._id}
+                    >
+                      <img src={drink.imageLink} alt={drink.name} />
+                      <div className="order-drink-info">
+                        <div className="order-drink-title">
+                          <div>
+                            <h3>{drink.name}</h3>
+                            <p>{drink.category}</p>
+                          </div>
+                          <span>${Number(drink.price).toFixed(2)}</span>
+                        </div>
+                        <div className="drink-options">
+                          <div className="drink-options-1">
+                            <label>
+                              Sugar
+                              <select
+                                value={options.sugar}
+                                onChange={(event) =>
+                                  updateDrinkOption(
+                                    drink._id,
+                                    "sugar",
+                                    event.target.value,
+                                  )
+                                }
+                              >
+                                <option value="Full">Full</option>
+                                <option value="Half">Half</option>
+                                <option value="Zero">Zero</option>
+                              </select>
+                            </label>
+                            <label>
+                              Ice
+                              <select
+                                value={options.ice}
+                                onChange={(event) =>
+                                  updateDrinkOption(
+                                    drink._id,
+                                    "ice",
+                                    event.target.value,
+                                  )
+                                }
+                              >
+                                <option value="Normal">Normal</option>
+                                <option value="Less">Less</option>
+                                <option value="No">No</option>
+                              </select>
+                            </label>
+                          </div>
+                          <button
+                            type="button"
+                            className="add-drink-button"
+                            onClick={() => addDrinkToList(drink)}
+                            disabled={totalDrinks >= MAX_DRINKS}
                           >
-                            <option value="full">Full</option>
-                            <option value="half">Half</option>
-                            <option value="zero">Zero</option>
-                          </select>
-                        </label>
-                        <label>
-                          Ice
-                          <select
-                            value={preferences.ice}
-                            onChange={(event) =>
-                              updatePreference(
-                                drink._id,
-                                "ice",
-                                event.target.value,
-                              )
-                            }
-                          >
-                            <option value="normal">Normal</option>
-                            <option value="less">Less</option>
-                          </select>
-                        </label>
-                        <button
-                          type="button"
-                          className="add-drink-button"
-                          onClick={() => addDrink(drink._id)}
-                          disabled={totalDrinks >= MAX_DRINKS}
-                        >
-                          + Add drink
-                        </button>
+                            + Add drink
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  </article>
-                );
-              })}
+                    </article>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        </form>
+            <div className="order-section">
+              <div className="order-section-heading">
+                <div>
+                  <h2 id="drinks-heading">Order Summary</h2>
+                </div>
+              </div>
+              {orderItems.length > 0 ? (
+                <>
+                  {orderItems.map((item, index) => (
+                    <div
+                      className="order-item"
+                      key={`${item.drinkId}-${index}`}
+                    >
+                      <div className="drink-list-flex order-item-heading">
+                        <p>
+                          {item.quantity} × {item.name}
+                        </p>
+                        <div className="drink-list-actions">
+                          <p>${(item.price * item.quantity).toFixed(2)}</p>
+                          <button
+                            type="button"
+                            className="remove-drink-button"
+                            onClick={() => removeDrinkFromList(index)}
+                            aria-label={`Remove ${item.name} from order`}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                      <ul className="order-item-preferences">
+                        <li>{item.sugar} sugar</li>
+                        <li>{item.ice} ice</li>
+                      </ul>
+                    </div>
+                  ))}
+                  <p className="order-summary-total">
+                    Total <strong>${totalPrice.toFixed(2)}</strong>
+                  </p>
+                  <div className="order-button-container">
+                    <button
+                      type="submit"
+                      className="order-button"
+                      disabled={orderItems.length === 0}
+                    >
+                      Submit order
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p>No drinks selected.</p>
+                </>
+              )}
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

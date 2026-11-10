@@ -6,27 +6,30 @@ function About() {
   return (
     <>
       <title>Berry Matcha | About The Owner</title>
-      <RevealOnScroll className="owner-container">
-        <div className="section">
-          <div className="owner">
-            <div>
-              <h1 className="owner-text">Meet the Owner</h1>
-
-              <p className="owner-text">
-                Hello my name is Crystal. I'm currently a second year in CWU,
-                majoring in Business Finance with a Economics, Entrepuership,
-                Digital Marketing minors! I didn't like store brought matchas as
-                much but some small business ones at pop up events I do like but
-                they ended being way to pricey so when I was experiementing on
-                making matchas with my friends around me they loved it (they
-                don't like matcha). During Spring 2026 I got encouraged to start
-                a matcha business so here I am!
-              </p>
+      <RevealOnScroll>
+        <div className="owner-container">
+          <div className="section">
+            <div className="owner">
+              <div>
+                <h1 className="owner-text" id="meet-owner">
+                  Meet the Owner
+                </h1>
+                <p className="owner-text">
+                  Hello my name is Crystal. I'm currently a second year in CWU,
+                  majoring in Business Finance with a Economics, Entrepuership,
+                  Digital Marketing minors! I didn't like store brought matchas
+                  as much but some small business ones at pop up events I do
+                  like but they ended being way to pricey so when I was
+                  experiementing on making matchas with my friends around me
+                  they loved it (they don't like matcha). During Spring 2026 I
+                  got encouraged to start a matcha business so here I am!
+                </p>
+              </div>
+              <img src="headshot.jpg" alt="image of owner" width={400} />
             </div>
-            <img src="headshot.jpg" alt="image of owner" width={400} />
           </div>
         </div>
-        <a class="read-more" href="#description">
+        <a className="read-more" href="#description">
           <h4>Read More ▼</h4>
         </a>
       </RevealOnScroll>
@@ -87,6 +90,13 @@ function About() {
           </p>
           <p>
             <span>A:</span> Yes, at checkout you can adjust!
+          </p>
+          <br />
+          <p>
+            <span>Q:</span> Who made this really cute website?
+          </p>
+          <p>
+            <span>A:</span> Leo Ragual and Erica Maes! linkedin.com/leoragual
           </p>
         </RevealOnScroll>
       </div>

@@ -10,3 +10,8 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+@font-face {
+  font-family: myFont; /* set name */
+  src: url(/Satisfy-Regular.ttf); /* url of the font */
+}

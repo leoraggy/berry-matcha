@@ -2,6 +2,15 @@
   background-color: #fed9e9;
 }
 
+@font-face {
+  font-family: myFont; /* set name */
+  src: url(/Satisfy-Regular.ttf); /* url of the font */
+}
+
+#big-order-section {
+  background-color: #fff3f8;
+}
+
 .order-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -12,6 +21,8 @@
 .order-header {
   margin-bottom: 2.5rem;
   text-align: center;
+  /* font-family: "Didot, serif"; */
+  font-family: myFont;
 }
 
 .order-eyebrow {
@@ -92,6 +103,7 @@
 }
 
 .customer-fields label,
+.pickup-fields label,
 .drink-options label {
   display: grid;
   gap: 0.4rem;
@@ -101,6 +113,8 @@
 }
 
 .customer-fields input,
+.pickup-fields input,
+.pickup-fields select,
 .drink-options select {
   min-width: 0;
   min-height: 2.75rem;
@@ -113,9 +127,35 @@
 }
 
 .customer-fields input:focus,
+.pickup-fields input:focus,
+.pickup-fields select:focus,
 .drink-options select:focus {
   border-color: #718f68;
   outline: 3px solid rgb(177 195 159 / 35%);
+}
+
+.pickup-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.pickup-fields input,
+.pickup-fields select {
+  min-width: 0;
+  min-height: 2.75rem;
+  border: 1px solid #d6dfd2;
+  border-radius: 9px;
+  background: #fff;
+  color: #263a2a;
+  font: inherit;
+  padding: 0.6rem 0.75rem;
+}
+
+.pickup-fields select:disabled {
+  background: #f5f6f3;
+  color: #718071;
+  cursor: not-allowed;
 }
 
 .drink-limit {
@@ -208,10 +248,10 @@
 
 .add-drink-button {
   min-height: 2.25rem;
-  border: 1px solid #cbd7c5;
+  border: none;
   border-radius: 8px;
-  background: white;
-  color: #345b35;
+  background: #ffcacf;
+  color: white;
   cursor: pointer;
   font: inherit;
   font-size: 0.85rem;
@@ -220,7 +260,7 @@
 }
 
 .add-drink-button:hover:not(:disabled) {
-  background: #f1f5ed;
+  background: #f2bfc4;
 }
 
 .add-drink-button:disabled {
@@ -272,10 +312,14 @@
 
 .drink-options {
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
   align-items: end;
   gap: 0.5rem;
-  max-width: 280px;
+}
+
+.drink-options-1 {
+  display: flex;
+  gap: 1rem;
 }
 
 .drink-options label {
@@ -339,6 +383,12 @@
   font-size: 1.5rem;
 }
 
+.order-button-container {
+  display: flex;
+  justify-content: end;
+  margin-top: 1rem;
+}
+
 .order-button {
   min-height: 2.9rem;
   grid-column: 1 / -1;
@@ -393,6 +443,10 @@
     grid-template-columns: 1fr;
   }
 
+  .pickup-fields {
+    grid-template-columns: 1fr;
+  }
+
   .order-section-heading {
     align-items: flex-start;
   }
@@ -425,5 +479,86 @@
   .summary-total {
     justify-items: start;
     text-align: left;
+  }
+}
+
+.drink-list-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.drink-list-flex > p {
+  margin: 0;
+}
+
+.drink-list-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  white-space: nowrap;
+}
+
+.drink-list-actions > p {
+  margin: 0;
+  color: #345b35;
+  font-weight: 700;
+}
+
+.order-section > .order-item {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid #e3e9de;
+}
+
+.order-section > .order-item:first-of-type {
+  border-top: 1px solid #e3e9de;
+}
+
+.order-section > .order-item:last-of-type {
+  border-bottom: 0;
+}
+
+.order-section > .order-item .order-item-heading {
+  margin: 0;
+}
+
+.order-section > .order-item .order-item-preferences {
+  display: flex;
+  gap: 1rem;
+  margin: 0.45rem 0 0;
+  padding: 0;
+  color: #718071;
+  font-size: 0.82rem;
+  list-style: none;
+}
+
+.order-summary-total {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0 0;
+  padding-top: 1rem;
+  border-top: 2px solid #e3e9de;
+  color: #405642;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.order-summary-total strong {
+  color: #345b35;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 480px) {
+  .drink-list-flex {
+    align-items: flex-start;
+  }
+
+  .drink-list-actions {
+    gap: 0.5rem;
+  }
+
+  .remove-drink-button {
+    padding: 0;
   }
 }

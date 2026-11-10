@@ -10,6 +10,9 @@ import { Link } from "react-router-dom";
 import RevealOnScroll from "../components/RevealOnScroll";
 
 function Home() {
+  const OPTIONS = { loop: true };
+  const SLIDE_COUNT = 5;
+  const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
   return (
     <div>
       <title>Berry Matcha</title>
@@ -36,8 +39,9 @@ function Home() {
             Learn More
           </Link>
         </div>
-        <img src="whisk.JPG" alt="" width={350} />
+        <img src="whisk.JPG" alt="" width={250} />
       </RevealOnScroll>
+
       <RevealOnScroll className="picture-container">
         <h2>
           Join us in our Berry Matcha journey by following our social media!
@@ -56,7 +60,7 @@ function Home() {
         </h1>
       </RevealOnScroll>
       <RevealOnScroll className="menu-container">
-        <h1>Explore the drinks!</h1>
+        <h1 id="explore-drink">Explore the drinks!</h1>
         <p>
           Fresh matcha drinks made to order. Matcha are high quality. Different
           kinds of matcha powder sourced from Japan.

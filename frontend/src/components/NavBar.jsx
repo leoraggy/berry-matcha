@@ -32,15 +32,14 @@ function NavBar() {
             </div>
           </Link>
           <Link to="/order" className="links">
-            <a className="links">
+            <p className="links">
               <img
                 src="/cart.png"
                 onMouseOver={(e) => (e.currentTarget.src = "/carthover.png")}
                 onMouseLeave={(e) => (e.currentTarget.src = "/cart.png")}
                 width={50}
               />
-              {/* Cart */}
-            </a>
+            </p>
           </Link>
         </div>
       </nav>

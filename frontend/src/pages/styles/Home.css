@@ -32,7 +32,7 @@
 }
 
 .picture-container {
-  background-color: #fed9e9;
+  background-color: #ffcacf;
   text-align: center;
   padding: 1rem 2rem;
 }
@@ -40,17 +40,18 @@
 .story-container {
   display: flex;
   justify-content: space-around;
-  margin: 1rem 0;
-}
-
-.picture-container h2 {
-  color: white;
+  margin: 2rem 0;
 }
 
 .story-item-1 {
   max-width: 400px;
   margin: auto 0;
 }
+
+.picture-container h2 {
+  color: white;
+}
+
 #matcha {
   align-items: end;
 }
@@ -88,4 +89,9 @@
 .menu-container p {
   color: #b1c39f;
   font-size: larger;
+}
+
+#explore-drink {
+  font-family: myFont;
+  font-size: xxx-large;
 }

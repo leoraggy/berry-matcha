@@ -55,6 +55,8 @@
   display: flex;
   align-items: center;
   text-align: center;
+  font-family: myFont;
+  font-size: x-large;
 }
 
 .line-container::before,

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import DrinkRepository from "../data/drinkRepository";
 import "./styles/DrinkDetails.css";
-
 const drinkRepository = new DrinkRepository();
 
 function DrinkDetails() {
@@ -65,7 +64,7 @@ function DrinkDetails() {
     );
   }
 
-  const { name, price, category, imageLink } = result.drink;
+  const { name, price, category, imageLink, description } = result.drink;
 
   return (
     <div className="drink-details-page">
@@ -89,7 +88,7 @@ function DrinkDetails() {
             {category || "Berry Matcha favorite"}
           </span>
           <h1>{name}</h1>
-          <p className="drink-details-intro">Banana banana.</p>
+          <p className="drink-details-intro">{description}</p>
           <div className="drink-details-purchase">
             <div className="drink-details-price">
               <strong>${Number(price).toFixed(2)}</strong>

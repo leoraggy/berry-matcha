@@ -1,30 +1,64 @@
 const API_BASE_URL = `${import.meta.env.VITE_API_URL}/drinks`;
 
 class DrinkRepository {
-  async getAllDrinks() {
+  async request(url, options) {
     try {
-      const response = await fetch(API_BASE_URL);
+      const response = await fetch(url, options);
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error("Network response was no ok");
+        throw new Error(data.message || `Request failed with status ${response.status}`);
       }
-      return await response.json();
+
+      return data;
     } catch (error) {
-      console.error("Error fetching drinks:", error);
+      console.error("Error requesting drinks:", error);
       throw error;
     }
   }
 
+  async getAllDrinks() {
+    return this.request(API_BASE_URL);
+  }
+
+  async getDrinkSales() {
+    return this.request(`${API_BASE_URL}/sales`);
+  }
+
   async getDrinkById(id) {
-    try {
-      const response = await fetch(`${API_BASE_URL}/${id}`);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return await response.json();
-    } catch (error) {
-      console.error(`Error fetching drink with id ${id}:`, error);
-      throw error;
-    }
+    return this.request(`${API_BASE_URL}/${encodeURIComponent(id)}`);
+  }
+
+  async uploadDrinkImage(file) {
+    const body = new FormData();
+    body.append("image", file);
+
+    return this.request(`${API_BASE_URL}/image`, {
+      method: "POST",
+      body,
+    });
+  }
+
+  async createDrink(drink) {
+    return this.request(API_BASE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(drink),
+    });
+  }
+
+  async updateDrink(id, drink) {
+    return this.request(`${API_BASE_URL}/${encodeURIComponent(id)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(drink),
+    });
+  }
+
+  async deleteDrink(id) {
+    return this.request(`${API_BASE_URL}/${encodeURIComponent(id)}`, {
+      method: "DELETE",
+    });
   }
 }
 

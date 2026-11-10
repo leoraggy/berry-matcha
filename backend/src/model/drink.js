@@ -13,7 +13,11 @@ const drinkSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  nutrients: String,
+  description: String,
+  isAvailable: {
+    type: Boolean,
+    default: true,
+  },
   allergens: String,
   imageLink: String,
 });

@@ -1,0 +1,397 @@
+.admin-page {
+  min-height: 100vh;
+  padding: 3rem 5% 5rem;
+  background: #fed9e9;
+  color: #263a2a;
+}
+
+.admin-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.admin-header p {
+  margin: 0 0 0.4rem;
+  color: #718767;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.admin-header h1 {
+  margin: 0;
+  color: #345b35;
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.sales-chart-section {
+  max-width: 1000px;
+  margin: 0 auto 2.5rem;
+  padding: clamp(1.25rem, 4vw, 2rem);
+  border: 1px solid #e3e9de;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 8px 26px rgb(52 91 53 / 7%);
+}
+
+.sales-chart-section h2 {
+  margin: 0 0 1rem;
+  color: #345b35;
+}
+
+.sales-chart-section > p {
+  color: #718071;
+}
+
+.admin-add-button {
+  margin-top: 1.25rem;
+}
+
+.admin-modal-backdrop {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  overflow-y: auto;
+  place-items: center;
+  padding: 1.25rem;
+  background: rgb(25 36 27 / 58%);
+}
+
+.admin-modal {
+  width: min(100%, 720px);
+  max-height: calc(100vh - 2.5rem);
+  overflow-y: auto;
+  padding: clamp(1.25rem, 4vw, 2rem);
+  border: 1px solid #e3e9de;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 18px 60px rgb(0 0 0 / 24%);
+}
+
+.admin-modal-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.admin-modal-heading h2 {
+  margin: 0;
+  color: #345b35;
+}
+
+.admin-modal-heading p {
+  margin: 0.35rem 0 0;
+  color: #718071;
+}
+
+.admin-modal-close {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid #d6dfd2;
+  border-radius: 50%;
+  background: #fff;
+  color: #345b35;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.admin-modal-close:hover:not(:disabled) {
+  background: #f1f5ed;
+}
+
+.admin-modal-close:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.admin-drink-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.admin-drink-form > label {
+  display: grid;
+  gap: 0.4rem;
+  color: #405642;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.admin-drink-form input:not([type="checkbox"]),
+.admin-drink-form select,
+.admin-drink-form textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 2.7rem;
+  box-sizing: border-box;
+  border: 1px solid #d6dfd2;
+  border-radius: 9px;
+  background: #fff;
+  color: #263a2a;
+  font: inherit;
+  padding: 0.6rem 0.75rem;
+}
+
+.admin-drink-form textarea {
+  resize: vertical;
+}
+
+.admin-image-preview {
+  width: min(100%, 220px);
+  max-height: 180px;
+  border-radius: 9px;
+  object-fit: cover;
+}
+
+.admin-drink-form input:focus,
+.admin-drink-form select:focus,
+.admin-drink-form textarea:focus {
+  border-color: #718f68;
+  outline: 3px solid rgb(177 195 159 / 35%);
+}
+
+.admin-field-wide {
+  grid-column: 1 / -1;
+}
+
+.admin-availability {
+  display: flex !important;
+  align-items: center;
+  gap: 0.6rem !important;
+}
+
+.admin-availability input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #345b35;
+}
+
+.admin-form-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.admin-primary-button,
+.admin-secondary-button,
+.admin-edit-button,
+.admin-delete-button {
+  min-height: 2.5rem;
+  border: 0;
+  border-radius: 9px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.55rem 1rem;
+}
+
+.admin-primary-button {
+  background: #345b35;
+  color: #fff;
+}
+
+.admin-primary-button:hover:not(:disabled) {
+  background: #28492a;
+}
+
+.admin-secondary-button {
+  border: 1px solid #cbd7c5;
+  background: #fff;
+  color: #345b35;
+}
+
+.admin-primary-button:disabled,
+.admin-secondary-button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.admin-message {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #345b35;
+}
+
+.admin-menu-section {
+  margin: 0 auto 2.5rem;
+}
+
+.admin-category-heading {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0 1.5rem;
+  color: #345b35;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.admin-category-heading::before,
+.admin-category-heading::after {
+  height: 2px;
+  flex: 1;
+  background: #345b35;
+  content: "";
+}
+
+.admin-drink-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.admin-drink-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 14%);
+  transition: transform 180ms ease;
+}
+
+.admin-drink-card:hover {
+  transform: translateY(-3px);
+}
+
+.admin-drink-card > img,
+.admin-image-placeholder {
+  display: grid;
+  width: 100%;
+  height: 190px;
+  place-items: center;
+  background: #f1f5ed;
+  color: #718767;
+  object-fit: cover;
+}
+
+.admin-drink-card.is-unavailable > img {
+  filter: grayscale(0.7);
+  opacity: 0.7;
+}
+
+.admin-drink-card-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 0.85rem;
+}
+
+.admin-drink-card-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.admin-drink-card-title h3 {
+  margin: 0;
+  color: #345b35;
+  font-size: 1rem;
+}
+
+.admin-drink-card-title span {
+  color: #345b35;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.admin-drink-status {
+  margin: 0.35rem 0 0.75rem;
+  color: #718071;
+  font-size: 0.82rem;
+}
+
+.admin-drink-sales {
+  margin: -0.5rem 0 0.75rem;
+  color: #345b35;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.admin-edit-button {
+  width: 100%;
+  background: #ffcacf;
+  color: #345b35;
+}
+
+.admin-delete-button {
+  width: 100%;
+  min-height: 2.5rem;
+  border: 0;
+  border-radius: 9px;
+  background: darkred;
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.55rem 1rem;
+}
+
+.admin-edit-button:hover {
+  background: #fbb4bb;
+}
+
+.admin-delete-button:hover:not(:disabled) {
+  background: rgb(90, 1, 1);
+}
+
+.admin-delete-button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.admin-action-message {
+  margin: 0 0 1.5rem;
+  color: #345b35;
+  text-align: center;
+}
+
+.admin-action-message.is-error {
+  color: #8a3030;
+}
+
+.admin-empty {
+  color: #718071;
+  text-align: center;
+}
+
+.admin-button-panel {
+  display: flex;
+  justify-content: space-around;
+  gap: 5px;
+  align-items: flex-end;
+  margin-top: auto;
+}
+
+@media (max-width: 560px) {
+  .admin-page {
+    padding: 2rem 1rem 3rem;
+  }
+
+  .admin-modal-backdrop {
+    align-items: start;
+    padding: 0.75rem;
+  }
+
+  .admin-modal {
+    max-height: calc(100vh - 1.5rem);
+  }
+
+  .admin-drink-form {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-field-wide {
+    grid-column: auto;
+  }
+}

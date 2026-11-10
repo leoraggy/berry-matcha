@@ -2,11 +2,11 @@ import "./styles/DrinkList.css";
 import { Link } from "react-router-dom";
 function DrinkList({ drinks }) {
   const matchaDrinks = drinks.filter((drink) => {
-    return drink.category == "Matcha";
+    return drink.category == "Matcha" && drink.isAvailable == true;
   });
 
   const teaDrinks = drinks.filter((drink) => {
-    return drink.category == "Tea";
+    return drink.category == "Tea" && drink.isAvailable == true;
   });
   return (
     <div className="drink-container">

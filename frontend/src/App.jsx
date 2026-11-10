@@ -4,9 +4,11 @@ import About from "./pages/About";
 import Home from "./pages/Home";
 import Menu from "./pages/Menu";
 import Order from "./pages/Order";
+import Admin from "./pages/Admin";
 import DrinkDetails from "./components/DrinkDetails";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
+import Loading from "./components/Loading";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,14 @@ const router = createBrowserRouter([
       {
         path: "/order",
         element: <Order />,
+      },
+      {
+        path: "/admin",
+        element: <Admin />,
+      },
+      {
+        path: "/loading",
+        element: <Loading />,
       },
       {
         path: "*",

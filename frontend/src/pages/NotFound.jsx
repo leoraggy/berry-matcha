@@ -1,5 +1,3 @@
-import "/404.png";
-  
 function NotFound() {
   return (
     <div
@@ -14,7 +12,7 @@ function NotFound() {
     >
       <h2>404 Page Not Found</h2>
       <img
-        src="404.png"
+        src="/404.png"
         alt="error image"
         width={200}
         style={{ margin: "auto" }}

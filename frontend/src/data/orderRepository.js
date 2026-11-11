@@ -1,4 +1,4 @@
-const API_BASE_URL = `${import.meta.env.VITE_API_URL}/orders`;
+const API_BASE_URL = "/api/orders";
 
 class OrderRepository {
   async request(url, options) {

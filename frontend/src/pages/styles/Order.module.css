@@ -3,20 +3,13 @@
 }
 
 .big-order-section {
+  margin: 0 10%;
   background-color: #fff3f8;
 }
 
 .order-container {
-  max-width: 1200px;
-  margin: 0 auto;
   padding: 3.5rem 1.5rem 5rem;
   color: #263a2a;
-}
-
-.order-header {
-  margin-bottom: 2.5rem;
-  text-align: center;
-  font-family: myFont;
 }
 
 .order-eyebrow {
@@ -28,15 +21,13 @@
   text-transform: uppercase;
 }
 
-.order-header h1 {
-  margin: 0;
+.orderHeader {
+  margin-bottom: 2.5rem;
+  text-align: center;
+  font-family: myFont;
   color: #345b35;
-  font-size: clamp(2rem, 5vw, 3rem);
-}
-
-.order-header > p:last-child {
-  margin: 0.75rem 0 0;
-  color: #657365;
+  margin: 0;
+  font-size: 3rem;
 }
 
 .order-form {
@@ -566,20 +557,6 @@
   font-size: 1.2rem;
 }
 
-@media (max-width: 480px) {
-  .drink-list-flex {
-    align-items: flex-start;
-  }
-
-  .drink-list-actions {
-    gap: 0.5rem;
-  }
-
-  .remove-drink-button {
-    padding: 0;
-  }
-}
-
 @media (max-width: 800px) {
   .customer-fields {
     display: flex;
@@ -589,5 +566,21 @@
   .pickup-fields {
     display: flex;
     flex-direction: column;
+  }
+  .big-order-section {
+    margin: 0;
+    padding: 1rem;
+    background-color: #fed9e9;
+  }
+
+  .order-container {
+    padding: 0;
+    margin: 0;
+    border: none;
+  }
+
+  .order-page {
+    margin: 0;
+    padding: 0;
   }
 }

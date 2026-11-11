@@ -189,15 +189,12 @@ function Order() {
 
   return (
     <div className={styles["order-page"]}>
+      <title>Berry Matcha | Order</title>
       <div className={styles["order-container"]}>
-        <title>Berry Matcha | Order</title>
         <div
           className={`${styles["order-section"]} ${styles["big-order-section"]}`}
-          id="big-order-section"
         >
-          <header className={styles["order-header"]}>
-            <h1 id="order-header">Place Order</h1>
-          </header>
+          <h1 className={styles.orderHeader}>Place Order</h1>
           <form className={styles["order-form"]} onSubmit={handleSubmit}>
             <div className={styles["order-section"]}>
               <div className={styles["customer-fields"]}>

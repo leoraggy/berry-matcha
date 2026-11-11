@@ -71,4 +71,15 @@
   .section h2 {
     text-align: center;
   }
+  .about-page {
+    padding: -16px;
+  }
+
+  .section {
+    margin: 1rem 2rem;
+  }
+
+  .owner-container {
+    padding-top: 0;
+  }
 }

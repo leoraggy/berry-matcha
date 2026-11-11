@@ -21,7 +21,7 @@
 .drinkCard {
   border-radius: 15px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  width: 250px;
+  width: 300px;
   margin: auto;
   margin-bottom: 1rem;
   transition: transform 500ms ease;
@@ -90,6 +90,10 @@
   }
 
   .drinkCard {
-    width: 60%;
+    width: 80%;
+  }
+
+  .drinkContainer {
+    margin: 0;
   }
 }

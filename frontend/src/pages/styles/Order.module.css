@@ -464,14 +464,58 @@
   }
 
   .order-drink-card {
+    display: grid;
+    grid-template-columns: 68px minmax(0, 1fr);
     gap: 0.7rem;
     padding: 0.65rem;
+  }
+
+  .order-drink-info {
+    display: contents;
   }
 
   .order-drink-card > img {
     width: 68px;
     height: 96px;
-    flex-basis: 68px;
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .order-drink-title {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    min-width: 0;
+  }
+
+  .drink-options {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+
+  .drink-options-1 {
+    min-width: 0;
+    flex: 1;
+    gap: clamp(0.35rem, 3vw, 1rem);
+  }
+
+  .drink-options label {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .drink-options select {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .add-drink-button {
+    flex: 0 0 auto;
+    white-space: nowrap;
   }
 
   .drink-add-control {

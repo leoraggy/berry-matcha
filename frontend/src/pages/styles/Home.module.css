@@ -1,3 +1,9 @@
+.banner {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -11,6 +17,11 @@
 
 .instagram a {
   text-decoration: underline;
+  color: white;
+}
+
+.instagram a:hover {
+  color: #286d2f;
 }
 
 .grid-container img {
@@ -52,24 +63,29 @@
   color: white;
 }
 
-#matcha {
+.matcha {
   align-items: end;
 }
-#thai {
+.thai {
   width: 60%;
 }
 
-#group2 {
+.group2 {
   width: 90%;
 }
 
 .learn-more {
-  background-color: #ffcacf;
-  color: white;
+  min-height: 2.25rem;
   border: none;
   border-radius: 15px;
-  padding: 6px 12px;
+  background: #ffcacf;
+  color: white;
+  cursor: pointer;
+  font: inherit;
   font-size: x-large;
+  font-weight: 700;
+  padding: 0.4rem 0.65rem;
+  text-decoration: none;
 }
 
 .learn-more:hover {
@@ -91,7 +107,7 @@
   font-size: larger;
 }
 
-#explore-drink {
+.explore-drink {
   font-family: myFont;
   font-size: xxx-large;
 }

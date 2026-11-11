@@ -1,4 +1,4 @@
-.owner-container {
+.about-page .owner-container {
   position: relative;
   margin: 0;
   background-color: #fed9e9;
@@ -21,12 +21,12 @@
   color: rgb(121, 98, 102);
 }
 
-#meet-owner {
+.about-page .meet-owner {
   font-family: myFont;
   font-size: xxx-large;
 }
 
-span {
+.about-page span {
   font-weight: bold;
 }
 

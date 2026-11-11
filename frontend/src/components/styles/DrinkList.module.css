@@ -1,24 +1,24 @@
-.drink-container {
+.drinkContainer {
   margin: 0 5%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
 }
 
-.drink-card img {
+.drinkCard img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 15px 15px 0 0;
 }
 
-.drink-list {
+.drinkList {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
 }
 
-.drink-card {
+.drinkCard {
   border-radius: 15px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   width: 250px;
@@ -27,31 +27,35 @@
   transition: transform 500ms ease;
 }
 
-.drink-card:hover {
+.drinkCard:hover {
   transform: scale(1.035);
 }
 
-.price-details {
+.priceDetails {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem;
 }
 
-.view-details {
-  background-color: #ffcacf;
-  color: white;
+.viewDetails {
   border: none;
-  border-radius: 10px;
-  padding: 3px 6px;
+  border-radius: 15px;
+  background: #ffcacf;
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.4rem 0.65rem;
+  text-decoration: none;
 }
 
-.view-details:hover {
+.viewDetails:hover {
   background-color: #fbb4bb;
   cursor: pointer;
 }
 
-.line-container {
+.lineContainer {
   display: flex;
   align-items: center;
   text-align: center;
@@ -59,14 +63,14 @@
   font-size: x-large;
 }
 
-.line-container::before,
-.line-container::after {
+.lineContainer::before,
+.lineContainer::after {
   content: "";
   flex: 1;
   border-bottom: 2px solid #345b35;
 }
 
-.line-text {
+.lineText {
   padding: 0 15px;
   color: #345b35;
   font-weight: bold;
@@ -74,7 +78,7 @@
   margin: 2rem 0;
 }
 
-.drink-name {
+.drinkName {
   padding-left: 0.5rem;
   margin: 0;
 }

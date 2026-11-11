@@ -25,25 +25,6 @@
   font-size: clamp(2rem, 5vw, 3rem);
 }
 
-.sales-chart-section {
-  max-width: 1000px;
-  margin: 0 auto 2.5rem;
-  padding: clamp(1.25rem, 4vw, 2rem);
-  border: 1px solid #e3e9de;
-  border-radius: 18px;
-  background: #fff;
-  box-shadow: 0 8px 26px rgb(52 91 53 / 7%);
-}
-
-.sales-chart-section h2 {
-  margin: 0 0 1rem;
-  color: #345b35;
-}
-
-.sales-chart-section > p {
-  color: #718071;
-}
-
 .admin-add-button {
   margin-top: 1.25rem;
 }
@@ -223,6 +204,29 @@
 
 .admin-menu-section {
   margin: 0 auto 2.5rem;
+}
+
+.line-container {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-family: myFont;
+  font-size: x-large;
+}
+
+.line-container::before,
+.line-container::after {
+  content: "";
+  flex: 1;
+  border-bottom: 2px solid #345b35;
+}
+
+.line-text {
+  padding: 0 15px;
+  color: #345b35;
+  font-weight: bold;
+  font-size: larger;
+  margin: 2rem 0;
 }
 
 .admin-category-heading {

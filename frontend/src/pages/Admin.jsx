@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import DrinkRepository from "../data/drinkRepository";
 import Loading from "../components/Loading";
 import Error from "../components/Error";
-import "./styles/Admin.css";
+import styles from "./styles/Admin.module.css";
 import SimpleBarChart from "../components/SimpleBarChart";
 
 const drinkRepo = new DrinkRepository();
@@ -232,15 +232,15 @@ function Admin() {
   }
 
   return (
-    <div className="admin-page">
+    <div className={styles["admin-page"]}>
       <title>Berry Matcha | Admin</title>
       <SimpleBarChart data={drinkSales} />
-      <header className="admin-header">
+      <header className={styles["admin-header"]}>
         <h1>Drink Admin</h1>
         <button
           ref={addDrinkButton}
           type="button"
-          className="admin-primary-button admin-add-button"
+          className={`${styles["admin-primary-button"]} ${styles["admin-add-button"]}`}
           onClick={startAdding}
         >
           + Add a new drink
@@ -248,7 +248,7 @@ function Admin() {
       </header>
       {deleteMessage && (
         <p
-          className={`admin-action-message${deleteMessage.isError ? " is-error" : ""}`}
+          className={`${styles["admin-action-message"]}${deleteMessage.isError ? ` ${styles["is-error"]}` : ""}`}
           role={deleteMessage.isError ? "alert" : "status"}
         >
           {deleteMessage.text}
@@ -257,7 +257,7 @@ function Admin() {
 
       {modalOpen && (
         <div
-          className="admin-modal-backdrop"
+          className={styles["admin-modal-backdrop"]}
           onMouseDown={(event) => {
             if (event.target === event.currentTarget && !saving) {
               resetForm();
@@ -265,12 +265,12 @@ function Admin() {
           }}
         >
           <section
-            className="admin-modal"
+            className={styles["admin-modal"]}
             role="dialog"
             aria-modal="true"
             aria-labelledby="admin-modal-title"
           >
-            <div className="admin-modal-heading">
+            <div className={styles["admin-modal-heading"]}>
               <div>
                 <h2 id="admin-modal-title">
                   {editingId ? "Edit drink" : "Add a new drink"}
@@ -283,7 +283,7 @@ function Admin() {
               </div>
               <button
                 type="button"
-                className="admin-modal-close"
+                className={styles["admin-modal-close"]}
                 aria-label="Close dialog"
                 onClick={resetForm}
                 disabled={saving}
@@ -291,7 +291,7 @@ function Admin() {
                 ×
               </button>
             </div>
-            <form className="admin-drink-form" onSubmit={handleSubmit}>
+            <form className={styles["admin-drink-form"]} onSubmit={handleSubmit}>
               <label>
                 Drink name
                 <input
@@ -337,13 +337,13 @@ function Admin() {
                 <span>PNG, JPG, WebP, or GIF; maximum 5 MB.</span>
                 {(imagePreview || formData.imageLink) && (
                   <img
-                    className="admin-image-preview"
+                    className={styles["admin-image-preview"]}
                     src={imagePreview || formData.imageLink}
                     alt="Drink preview"
                   />
                 )}
               </label>
-              <label className="admin-field-wide">
+              <label className={styles["admin-field-wide"]}>
                 Description
                 <textarea
                   name="description"
@@ -352,7 +352,7 @@ function Admin() {
                   onChange={handleChange}
                 />
               </label>
-              <label className="admin-field-wide">
+              <label className={styles["admin-field-wide"]}>
                 Allergens
                 <input
                   name="allergens"
@@ -360,7 +360,7 @@ function Admin() {
                   onChange={handleChange}
                 />
               </label>
-              <label className="admin-availability">
+              <label className={styles["admin-availability"]}>
                 <input
                   name="isAvailable"
                   type="checkbox"
@@ -369,10 +369,10 @@ function Admin() {
                 />
                 Available to order
               </label>
-              <div className="admin-form-actions admin-field-wide">
+              <div className={`${styles["admin-form-actions"]} ${styles["admin-field-wide"]}`}>
                 <button
                   type="submit"
-                  className="admin-primary-button"
+                  className={styles["admin-primary-button"]}
                   disabled={saving}
                 >
                   {saving
@@ -386,7 +386,7 @@ function Admin() {
                 {editingId && (
                   <button
                     type="button"
-                    className="admin-secondary-button"
+                    className={styles["admin-secondary-button"]}
                     onClick={resetForm}
                     disabled={saving}
                   >
@@ -395,7 +395,7 @@ function Admin() {
                 )}
               </div>
               {message && (
-                <p className="admin-message" role="status">
+                <p className={styles["admin-message"]} role="status">
                   {message}
                 </p>
               )}
@@ -411,51 +411,51 @@ function Admin() {
           (drink) => drink.category === category,
         );
         return (
-          <section className="admin-menu-section" key={category}>
-            <div class="line-container">
-              <span class="line-text">{category}</span>
+          <section className={styles["admin-menu-section"]} key={category}>
+            <div className={styles["line-container"]}>
+              <span className={styles["line-text"]}>{category}</span>
             </div>
             {categoryDrinks.length > 0 ? (
-              <div className="admin-drink-list">
+              <div className={styles["admin-drink-list"]}>
                 {categoryDrinks.map((drink) => (
                   <article
-                    className={`admin-drink-card${drink.isAvailable === false ? " is-unavailable" : ""}`}
+                    className={`${styles["admin-drink-card"]}${drink.isAvailable === false ? ` ${styles["is-unavailable"]}` : ""}`}
                     key={drink._id}
                   >
                     {drink.imageLink ? (
                       <img src={drink.imageLink} alt={drink.name} />
                     ) : (
-                      <div className="admin-image-placeholder">
+                      <div className={styles["admin-image-placeholder"]}>
                         Berry Matcha
                       </div>
                     )}
-                    <div className="admin-drink-card-content">
-                      <div className="admin-drink-card-title">
+                    <div className={styles["admin-drink-card-content"]}>
+                      <div className={styles["admin-drink-card-title"]}>
                         <h3>{drink.name}</h3>
                         <span>${Number(drink.price).toFixed(2)}</span>
                       </div>
-                      <p className="admin-drink-status">
+                      <p className={styles["admin-drink-status"]}>
                         {drink.isAvailable === false
                           ? "Unavailable"
                           : "Available"}
                       </p>
-                      <p className="admin-drink-sales">
+                      <p className={styles["admin-drink-sales"]}>
                         {drinkSales.find((sale) => sale._id === drink._id)
                           ?.quantitySold ?? 0}{" "}
                         sold
                       </p>
 
-                      <div className="admin-button-panel">
+                      <div className={styles["admin-button-panel"]}>
                         <button
                           type="button"
-                          className="admin-edit-button"
+                          className={styles["admin-edit-button"]}
                           onClick={() => startEditing(drink)}
                         >
                           Edit drink
                         </button>
                         <button
                           type="button"
-                          className="admin-delete-button"
+                          className={styles["admin-delete-button"]}
                           onClick={() => handleDelete(drink)}
                           disabled={deletingId !== null}
                         >
@@ -469,7 +469,7 @@ function Admin() {
                 ))}
               </div>
             ) : (
-              <p className="admin-empty">No drinks in this category yet.</p>
+              <p className={styles["admin-empty"]}>No drinks in this category yet.</p>
             )}
           </section>
         );

@@ -1,16 +1,15 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
+import styles from "./styles/SimpleBarChart.module.css";
 
 const SimpleBarChart = ({ data }) => {
   return (
-    <section className="sales-chart-section">
+    <section className={styles["sales-chart-section"]}>
       <h2>Drinks sold</h2>
       {data.length ? (
         <BarChart
+          className={styles["sales-chart"]}
           style={{
-            width: "100%",
-            maxWidth: "900px",
             height: Math.max(260, data.length * 52),
-            margin: "0 auto",
           }}
           responsive
           data={data}

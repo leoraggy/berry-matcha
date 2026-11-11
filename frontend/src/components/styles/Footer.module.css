@@ -1,11 +1,11 @@
-footer {
+.footer {
   background-color: #b1c39f;
   color: white;
   border: 1px solid #b1c39f;
   padding-top: 1rem;
 }
 
-hr {
+.footer hr {
   margin: 0;
 }
 
@@ -45,7 +45,7 @@ hr {
   margin: 0 auto;
 }
 
-a {
+.footer a {
   color: white;
   text-decoration: none;
 }

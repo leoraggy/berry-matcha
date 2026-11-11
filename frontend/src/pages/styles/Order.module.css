@@ -2,12 +2,7 @@
   background-color: #fed9e9;
 }
 
-@font-face {
-  font-family: myFont; /* set name */
-  src: url(/Satisfy-Regular.ttf); /* url of the font */
-}
-
-#big-order-section {
+.big-order-section {
   background-color: #fff3f8;
 }
 
@@ -21,7 +16,6 @@
 .order-header {
   margin-bottom: 2.5rem;
   text-align: center;
-  /* font-family: "Didot, serif"; */
   font-family: myFont;
 }
 
@@ -61,6 +55,29 @@
 
 .order-section {
   padding: clamp(1.25rem, 4vw, 2rem);
+}
+
+.line-container {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-family: myFont;
+  font-size: x-large;
+}
+
+.line-container::before,
+.line-container::after {
+  content: "";
+  flex: 1;
+  border-bottom: 2px solid #345b35;
+}
+
+.line-text {
+  padding: 0 15px;
+  color: #345b35;
+  font-weight: bold;
+  font-size: larger;
+  margin: 2rem 0;
 }
 
 .order-section-heading {

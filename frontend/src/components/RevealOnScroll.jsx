@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import "./styles/RevealOnScroll.css";
+import styles from "./styles/RevealOnScroll.module.css";
 
 function RevealOnScroll({ children, className = "" }) {
   const elementRef = useRef(null);
@@ -31,7 +31,7 @@ function RevealOnScroll({ children, className = "" }) {
   return (
     <div
       ref={elementRef}
-      className={`scroll-reveal${isVisible ? " is-visible" : ""}${className ? ` ${className}` : ""}`}
+      className={`${styles["scroll-reveal"]}${isVisible ? ` ${styles["is-visible"]}` : ""}${className ? ` ${className}` : ""}`}
     >
       {children}
     </div>

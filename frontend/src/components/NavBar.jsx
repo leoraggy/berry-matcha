@@ -1,18 +1,18 @@
 import { Link } from "react-router-dom";
-import "./styles/NavBar.css";
+import styles from "./styles/NavBar.module.css";
 import "/berrymatcha.png";
 import "/cart.png";
 import "/carthover.png";
 function NavBar() {
   return (
     <div>
-      <nav className="nav-bar">
+      <nav className={styles["nav-bar"]}>
         <div>
-          <Link to="/" className="links">
-            <div className="links">
+          <Link to="/" className={styles.links}>
+            <div className={styles.links}>
               <img
                 src="berrymatcha.png"
-                className="logo"
+                className={styles.logo}
                 alt="image of logo"
                 width={80}
               />
@@ -20,19 +20,19 @@ function NavBar() {
           </Link>
         </div>
 
-        <div className="links-container">
-          <Link to="/about" className="links">
+        <div className={styles["links-container"]}>
+          <Link to="/about" className={styles.links}>
             <div>
               <p>About</p>
             </div>
           </Link>
-          <Link to="/menu" className="links">
+          <Link to="/menu" className={styles.links}>
             <div>
               <p>Menu</p>
             </div>
           </Link>
-          <Link to="/order" className="links">
-            <p className="links">
+          <Link to="/order" className={styles.links}>
+            <p className={styles.links}>
               <img
                 src="/cart.png"
                 onMouseOver={(e) => (e.currentTarget.src = "/carthover.png")}

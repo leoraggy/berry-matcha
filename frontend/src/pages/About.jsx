@@ -1,20 +1,23 @@
 import "/headshot.jpg";
 import "/kitchen.jpg";
-import "./styles/About.css";
+import styles from "./styles/About.module.css";
 import RevealOnScroll from "../components/RevealOnScroll";
 function About() {
   return (
-    <>
+    <div className={styles["about-page"]}>
       <title>Berry Matcha | About The Owner</title>
       <RevealOnScroll>
-        <div className="owner-container">
-          <div className="section">
-            <div className="owner">
+        <div className={styles["owner-container"]}>
+          <div className={styles.section}>
+            <div className={styles.owner}>
               <div>
-                <h1 className="owner-text" id="meet-owner">
+                <h1
+                  className={`${styles["owner-text"]} ${styles["meet-owner"]}`}
+                  id="meet-owner"
+                >
                   Meet the Owner
                 </h1>
-                <p className="owner-text">
+                <p className={styles["owner-text"]}>
                   Hello my name is Crystal. I'm currently a second year in CWU,
                   majoring in Business Finance with a Economics, Entrepuership,
                   Digital Marketing minors! I didn't like store brought matchas
@@ -29,13 +32,13 @@ function About() {
             </div>
           </div>
         </div>
-        <a className="read-more" href="#description">
+        <a className={styles["read-more"]} href="#description">
           <h4>Read More ▼</h4>
         </a>
       </RevealOnScroll>
 
-      <div className="description" id="description">
-        <RevealOnScroll className="section">
+      <div className={styles.description} id="description">
+        <RevealOnScroll className={styles.section}>
           <h2>Why My Matcha</h2>
           <p>
             I focus on bold/balanced flavors, creamy/refreshing teaxtures, and
@@ -54,14 +57,14 @@ function About() {
           <h2>Making this in my kitchen!</h2>
 
           <img
-            className="kitchen"
+            className={styles.kitchen}
             src="kitchen.jpg"
             alt="image of kitchen"
             width={1000}
           />
         </RevealOnScroll>
 
-        <RevealOnScroll className="section">
+        <RevealOnScroll className={styles.section}>
           <h2>FAQ</h2>
           <p>
             <span>Q:</span> Do you take delivery?
@@ -100,7 +103,7 @@ function About() {
           </p>
         </RevealOnScroll>
       </div>
-    </>
+    </div>
   );
 }
 

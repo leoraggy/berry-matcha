@@ -1,11 +1,24 @@
 import "/error.png";
-import "./styles/Error.css";
 
 function Error({ error }) {
   return (
-    <div className="error">
+    <div
+      style={{
+        display: "flex",
+        marginTop: "10%",
+        flexDirection: "column",
+        textAlign: "center",
+        color: "#345b35",
+        justifyContent: "center",
+      }}
+    >
       <h3>{error}</h3>
-      <img src="error.png" alt="error image" width={200} id="error-image" />
+      <img
+        src="error.png"
+        alt="error image"
+        width={200}
+        style={{ margin: "auto" }}
+      />
     </div>
   );
 }

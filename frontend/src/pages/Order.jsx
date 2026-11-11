@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import DrinkRepository from "../data/drinkRepository";
 import OrderRepository from "../data/orderRepository";
-import "./styles/Order.css";
+import styles from "./styles/Order.module.css";
 import Loading from "../components/Loading";
 import Error from "../components/Error";
 
@@ -187,16 +187,19 @@ function Order() {
   };
 
   return (
-    <div className="order-page">
-      <div className="order-container">
+    <div className={styles["order-page"]}>
+      <div className={styles["order-container"]}>
         <title>Berry Matcha | Order</title>
-        <div className="order-section" id="big-order-section">
-          <header className="order-header">
+        <div
+          className={`${styles["order-section"]} ${styles["big-order-section"]}`}
+          id="big-order-section"
+        >
+          <header className={styles["order-header"]}>
             <h1 id="order-header">Place Order</h1>
           </header>
-          <form className="order-form" onSubmit={handleSubmit}>
-            <div className="order-section">
-              <div className="customer-fields">
+          <form className={styles["order-form"]} onSubmit={handleSubmit}>
+            <div className={styles["order-section"]}>
+              <div className={styles["customer-fields"]}>
                 <label>
                   First name
                   <input type="text" name="firstName" required />
@@ -215,14 +218,14 @@ function Order() {
                 </label>
               </div>
             </div>
-            <div className="order-section">
-              <div className="order-section-heading">
+            <div className={styles["order-section"]}>
+              <div className={styles["order-section-heading"]}>
                 <div>
                   <h2>Pickup details</h2>
                   <p>Choose a date and an available time slot.</p>
                 </div>
               </div>
-              <div className="pickup-fields">
+              <div className={styles["pickup-fields"]}>
                 <label>
                   Pickup date
                   <input
@@ -272,20 +275,20 @@ function Order() {
                 </label>
               </div>
             </div>
-            <div className="order-section">
-              <div className="order-section-heading">
+            <div className={styles["order-section"]}>
+              <div className={styles["order-section-heading"]}>
                 <div>
                   <h2 id="drinks-heading">Choose your drinks</h2>
                   <p>Add up to {MAX_DRINKS} drinks to your order.</p>
                 </div>
-                <span className="drink-limit">
+                <span className={styles["drink-limit"]}>
                   {totalDrinks} / {MAX_DRINKS}
                 </span>
               </div>
-              <div className="line-container">
-                <span className="line-text">Matcha</span>
+              <div className={styles["line-container"]}>
+                <span className={styles["line-text"]}>Matcha</span>
               </div>
-              <div className="order-drink-list">
+              <div className={styles["order-drink-list"]}>
                 {matchaDrinks.map((drink) => {
                   const addedQuantity = orderItems
                     .filter((item) => item.drinkId === drink._id)
@@ -296,20 +299,20 @@ function Order() {
                   };
                   return (
                     <article
-                      className={`order-drink-card${addedQuantity > 0 ? " is-selected" : ""}`}
+                      className={`${styles["order-drink-card"]}${addedQuantity > 0 ? ` ${styles["is-selected"]}` : ""}`}
                       key={drink._id}
                     >
                       <img src={drink.imageLink} alt={drink.name} />
-                      <div className="order-drink-info">
-                        <div className="order-drink-title">
+                      <div className={styles["order-drink-info"]}>
+                        <div className={styles["order-drink-title"]}>
                           <div>
                             <h3>{drink.name}</h3>
                             <p>{drink.category}</p>
                           </div>
                           <span>${Number(drink.price).toFixed(2)}</span>
                         </div>
-                        <div className="drink-options">
-                          <div className="drink-options-1">
+                        <div className={styles["drink-options"]}>
+                          <div className={styles["drink-options-1"]}>
                             <label>
                               Sugar
                               <select
@@ -347,7 +350,7 @@ function Order() {
                           </div>
                           <button
                             type="button"
-                            className="add-drink-button"
+                            className={styles["add-drink-button"]}
                             onClick={() => addDrinkToList(drink)}
                             disabled={totalDrinks >= MAX_DRINKS}
                           >
@@ -359,10 +362,10 @@ function Order() {
                   );
                 })}
               </div>
-              <div className="line-container">
-                <span className="line-text">Tea</span>
+              <div className={styles["line-container"]}>
+                <span className={styles["line-text"]}>Tea</span>
               </div>
-              <div className="order-drink-list">
+              <div className={styles["order-drink-list"]}>
                 {teaDrinks.map((drink) => {
                   const addedQuantity = orderItems
                     .filter((item) => item.drinkId === drink._id)
@@ -373,20 +376,20 @@ function Order() {
                   };
                   return (
                     <article
-                      className={`order-drink-card${addedQuantity > 0 ? " is-selected" : ""}`}
+                      className={`${styles["order-drink-card"]}${addedQuantity > 0 ? ` ${styles["is-selected"]}` : ""}`}
                       key={drink._id}
                     >
                       <img src={drink.imageLink} alt={drink.name} />
-                      <div className="order-drink-info">
-                        <div className="order-drink-title">
+                      <div className={styles["order-drink-info"]}>
+                        <div className={styles["order-drink-title"]}>
                           <div>
                             <h3>{drink.name}</h3>
                             <p>{drink.category}</p>
                           </div>
                           <span>${Number(drink.price).toFixed(2)}</span>
                         </div>
-                        <div className="drink-options">
-                          <div className="drink-options-1">
+                        <div className={styles["drink-options"]}>
+                          <div className={styles["drink-options-1"]}>
                             <label>
                               Sugar
                               <select
@@ -424,7 +427,7 @@ function Order() {
                           </div>
                           <button
                             type="button"
-                            className="add-drink-button"
+                            className={styles["add-drink-button"]}
                             onClick={() => addDrinkToList(drink)}
                             disabled={totalDrinks >= MAX_DRINKS}
                           >
@@ -437,8 +440,8 @@ function Order() {
                 })}
               </div>
             </div>
-            <div className="order-section">
-              <div className="order-section-heading">
+            <div className={styles["order-section"]}>
+              <div className={styles["order-section-heading"]}>
                 <div>
                   <h2 id="drinks-heading">Order Summary</h2>
                 </div>
@@ -447,18 +450,18 @@ function Order() {
                 <>
                   {orderItems.map((item, index) => (
                     <div
-                      className="order-item"
+                      className={styles["order-item"]}
                       key={`${item.drinkId}-${index}`}
                     >
-                      <div className="drink-list-flex order-item-heading">
+                      <div className={`${styles["drink-list-flex"]} ${styles["order-item-heading"]}`}>
                         <p>
                           {item.quantity} × {item.name}
                         </p>
-                        <div className="drink-list-actions">
+                        <div className={styles["drink-list-actions"]}>
                           <p>${(item.price * item.quantity).toFixed(2)}</p>
                           <button
                             type="button"
-                            className="remove-drink-button"
+                            className={styles["remove-drink-button"]}
                             onClick={() => removeDrinkFromList(index)}
                             aria-label={`Remove ${item.name} from order`}
                           >
@@ -466,19 +469,19 @@ function Order() {
                           </button>
                         </div>
                       </div>
-                      <ul className="order-item-preferences">
+                      <ul className={styles["order-item-preferences"]}>
                         <li>{item.sugar} sugar</li>
                         <li>{item.ice} ice</li>
                       </ul>
                     </div>
                   ))}
-                  <p className="order-summary-total">
+                  <p className={styles["order-summary-total"]}>
                     Total <strong>${totalPrice.toFixed(2)}</strong>
                   </p>
-                  <div className="order-button-container">
+                  <div className={styles["order-button-container"]}>
                     <button
                       type="submit"
-                      className="order-button"
+                      className={styles["order-button"]}
                       disabled={orderItems.length === 0}
                     >
                       Submit order

@@ -11,10 +11,6 @@
   z-index: 10;
 }
 
-Link {
-  text-decoration: none;
-}
-
 .links-container {
   display: flex;
   align-items: center;
@@ -68,7 +64,7 @@ Link {
 }
 
 .logo {
-  transition: transform 0.2s; /* Animation */
+  transition: transform 0.2s;
 }
 
 .logo:hover {

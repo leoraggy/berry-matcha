@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from "react";
 import DrinkList from "../components/DrinkList";
 import Loading from "../components/Loading";
 import Error from "../components/Error";
-import "./styles/Menu.css";
 
 const drinkRepo = new DrinkRepository();
 

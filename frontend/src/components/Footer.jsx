@@ -1,4 +1,4 @@
-import "./styles/Footer.css";
+import styles from "./styles/Footer.module.css";
 import "/favicon.png";
 import "/instagram.png";
 import "/email.png";
@@ -6,17 +6,22 @@ import { Link } from "react-router-dom";
 function Footer() {
   return (
     <>
-      <footer>
-        <div className="container">
-          <img src="favicon.png" alt="logo" width={150} className="grid-item" />
-          <div className="contact grid-item">
+      <footer className={styles.footer}>
+        <div className={styles.container}>
+          <img
+            src="favicon.png"
+            alt="logo"
+            width={150}
+            className={styles["grid-item"]}
+          />
+          <div className={`${styles.contact} ${styles["grid-item"]}`}>
             <h3>Contact Me</h3>
             <Link href="/about">About</Link>
             <p>LinCr@cwu.edu</p>
             <p>425-757-7587</p>
             <p>1900 N. Brooklane St Apt i3</p>
           </div>
-          <div className="hours grid-item">
+          <div className={`${styles.hours} ${styles["grid-item"]}`}>
             <h3>Hours of Operation</h3>
             <p>Mon: 9:00am - 10:00am, 4:00 pm-5:00pm </p>
             <p>Tues: 10:00am - 5:00pm </p>
@@ -28,7 +33,7 @@ function Footer() {
           </div>
         </div>
         <hr />
-        <div className="bottom-footer">
+        <div className={styles["bottom-footer"]}>
           <p>Berry Matcha · 2026</p>
           <a href="mailto:LinCr@cwu.edu">
             <img src="email.png" alt="email" width={25} />

@@ -1,4 +1,5 @@
-import "./styles/DrinkList.css";
+import styles from "./styles/DrinkList.module.css";
+
 import { Link } from "react-router-dom";
 function DrinkList({ drinks }) {
   const matchaDrinks = drinks.filter((drink) => {
@@ -9,19 +10,19 @@ function DrinkList({ drinks }) {
     return drink.category == "Tea" && drink.isAvailable == true;
   });
   return (
-    <div className="drink-container">
-      <div class="line-container">
-        <span class="line-text">Matcha</span>
+    <div className={styles.drinkContainer}>
+      <div className={styles.lineContainer}>
+        <span className={styles.lineText}>Matcha</span>
       </div>
-      <div className="drink-list">
+      <div className={styles.drinkList}>
         {matchaDrinks.map((drink) => (
-          <div className="drink-card" key={drink._id}>
+          <div className={styles.drinkCard} key={drink._id}>
             <img src={drink.imageLink} alt="img of drink" />
 
-            <h4 className="drink-name">{drink.name}</h4>
-            <div className="price-details">
+            <h4 className={styles.drinkName}>{drink.name}</h4>
+            <div className={styles.priceDetails}>
               <p>${drink.price.toFixed(2)}</p>
-              <Link className="view-details" to={`/menu/${drink._id}`}>
+              <Link className={styles.viewDetails} to={`/menu/${drink._id}`}>
                 View Details
               </Link>
             </div>
@@ -29,18 +30,18 @@ function DrinkList({ drinks }) {
         ))}
       </div>
       <br />
-      <div class="line-container">
-        <span class="line-text">Tea</span>
+      <div className={styles.lineContainer}>
+        <span className={styles.lineText}>Tea</span>
       </div>
-      <div className="drink-list">
+      <div className={styles.drinkList}>
         {teaDrinks.map((drink) => (
-          <div className="drink-card" key={drink._id}>
+          <div className={styles.drinkCard} key={drink._id}>
             <img src={drink.imageLink} alt="img of drink" />
 
-            <h4 className="drink-name">{drink.name}</h4>
-            <div className="price-details">
+            <h4 className={styles.drinkName}>{drink.name}</h4>
+            <div className={styles.priceDetails}>
               <p>${drink.price.toFixed(2)}</p>
-              <Link className="view-details" to={`/menu/${drink._id}`}>
+              <Link className={styles.viewDetails} to={`/menu/${drink._id}`}>
                 View Details
               </Link>
             </div>

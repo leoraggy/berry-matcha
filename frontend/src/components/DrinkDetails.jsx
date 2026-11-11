@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import DrinkRepository from "../data/drinkRepository";
-import "./styles/DrinkDetails.css";
+import styles from "./styles/DrinkDetails.module.css";
 const drinkRepository = new DrinkRepository();
 
 function DrinkDetails() {
@@ -33,7 +33,7 @@ function DrinkDetails() {
 
   if (result?.requestKey !== requestKey) {
     return (
-      <div className="drink-details-status" role="status">
+      <div className={styles["drink-details-status"]} role="status">
         <img src="/loading.gif" alt="" width={100} />
         <p>Whisking up your drink details...</p>
       </div>
@@ -42,21 +42,23 @@ function DrinkDetails() {
 
   if (result.error || !result.drink) {
     return (
-      <section className="drink-details-status drink-details-error">
-        <span className="drink-details-eyebrow">A little mix-up</span>
+      <section
+        className={`${styles["drink-details-status"]} ${styles["drink-details-error"]}`}
+      >
+        <span className={styles["drink-details-eyebrow"]}>A little mix-up</span>
         <h1>We couldn't find that drink</h1>
         <p>
           It may have moved off the menu. Please try again or browse our drinks.
         </p>
-        <div className="drink-details-actions">
+        <div className={styles["drink-details-actions"]}>
           <button
-            className="drink-details-button"
+            className={styles["drink-details-button"]}
             onClick={() => setRetryAttempt((attempt) => attempt + 1)}
             type="button"
           >
             Try again
           </button>
-          <Link className="drink-details-link" to="/menu">
+          <Link className={styles["drink-details-link"]} to="/menu">
             Back to menu
           </Link>
         </div>
@@ -67,33 +69,33 @@ function DrinkDetails() {
   const { name, price, category, imageLink, description } = result.drink;
 
   return (
-    <div className="drink-details-page">
-      <div className="drink-details-breadcrumb">
+    <div className={styles["drink-details-page"]}>
+      <div className={styles["drink-details-breadcrumb"]}>
         <Link to="/menu">Menu</Link>
         <span aria-hidden="true">/</span>
         <span>{name}</span>
       </div>
 
-      <section className="drink-details-hero">
-        <div className="drink-details-image-wrap">
+      <section className={styles["drink-details-hero"]}>
+        <div className={styles["drink-details-image-wrap"]}>
           <img
-            className="drink-details-image"
+            className={styles["drink-details-image"]}
             src={imageLink || "/boba.jpg"}
             alt={name}
           />
         </div>
 
-        <div className="drink-details-copy">
-          <span className="drink-details-eyebrow">
+        <div className={styles["drink-details-copy"]}>
+          <span className={styles["drink-details-eyebrow"]}>
             {category || "Berry Matcha favorite"}
           </span>
           <h1>{name}</h1>
-          <p className="drink-details-intro">{description}</p>
-          <div className="drink-details-purchase">
-            <div className="drink-details-price">
+          <p className={styles["drink-details-intro"]}>{description}</p>
+          <div className={styles["drink-details-purchase"]}>
+            <div className={styles["drink-details-price"]}>
               <strong>${Number(price).toFixed(2)}</strong>
             </div>
-            <Link className="drink-details-button" to="/order">
+            <Link className={styles["drink-details-button"]} to="/order">
               Order Now
             </Link>
           </div>

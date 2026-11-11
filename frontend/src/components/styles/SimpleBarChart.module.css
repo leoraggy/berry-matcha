@@ -1,0 +1,24 @@
+.sales-chart-section {
+  max-width: 1000px;
+  margin: 0 auto 2.5rem;
+  padding: clamp(1.25rem, 4vw, 2rem);
+  border: 1px solid #e3e9de;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 8px 26px rgb(52 91 53 / 7%);
+}
+
+.sales-chart {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.sales-chart-section h2 {
+  margin: 0 0 1rem;
+  color: #345b35;
+}
+
+.sales-chart-section > p {
+  color: #718071;
+}

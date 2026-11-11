@@ -1,7 +1,7 @@
 import "/banner.jpg";
 import "/whisk.JPG";
 import "/thai.JPG";
-import "/lineofmatcha.jpg";
+import "/lineofmatcha.JPG";
 import "/group1.JPG";
 import "/group2.JPG";
 import "/instagram.png";
@@ -45,7 +45,7 @@ function Home() {
         <div className={styles["grid-container"]}>
           <img src="group1.JPG" alt="" />
           <img
-            src="lineofmatcha.jpg"
+            src="lineofmatcha.JPG"
             alt=""
             id="matcha"
             className={styles.matcha}

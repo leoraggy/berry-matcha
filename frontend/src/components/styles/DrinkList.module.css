@@ -1,0 +1,95 @@
+.drinkContainer {
+  margin: 0 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.drinkCard img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px 15px 0 0;
+}
+
+.drinkList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.drinkCard {
+  border-radius: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  width: 250px;
+  margin: auto;
+  margin-bottom: 1rem;
+  transition: transform 500ms ease;
+}
+
+.drinkCard:hover {
+  transform: scale(1.035);
+}
+
+.priceDetails {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+}
+
+.viewDetails {
+  border: none;
+  border-radius: 15px;
+  background: #ffcacf;
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.4rem 0.65rem;
+  text-decoration: none;
+}
+
+.viewDetails:hover {
+  background-color: #fbb4bb;
+  cursor: pointer;
+}
+
+.lineContainer {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-family: myFont;
+  font-size: x-large;
+}
+
+.lineContainer::before,
+.lineContainer::after {
+  content: "";
+  flex: 1;
+  border-bottom: 2px solid #345b35;
+}
+
+.lineText {
+  padding: 0 15px;
+  color: #345b35;
+  font-weight: bold;
+  font-size: larger;
+  margin: 2rem 0;
+}
+
+.drinkName {
+  padding-left: 0.5rem;
+  margin: 0;
+}
+
+@media (max-width: 800px) {
+  .drinkList {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .drinkCard {
+    width: 60%;
+  }
+}

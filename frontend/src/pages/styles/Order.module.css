@@ -1,0 +1,593 @@
+.order-page {
+  background-color: #fed9e9;
+}
+
+.big-order-section {
+  background-color: #fff3f8;
+}
+
+.order-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem 5rem;
+  color: #263a2a;
+}
+
+.order-header {
+  margin-bottom: 2.5rem;
+  text-align: center;
+  font-family: myFont;
+}
+
+.order-eyebrow {
+  margin: 0 0 0.5rem;
+  color: #718767;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.order-header h1 {
+  margin: 0;
+  color: #345b35;
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.order-header > p:last-child {
+  margin: 0.75rem 0 0;
+  color: #657365;
+}
+
+.order-form {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.order-section,
+.order-summary,
+.order-error {
+  border: 1px solid #e3e9de;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 8px 26px rgb(52 91 53 / 7%);
+}
+
+.order-section {
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+
+.line-container {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-family: myFont;
+  font-size: x-large;
+}
+
+.line-container::before,
+.line-container::after {
+  content: "";
+  flex: 1;
+  border-bottom: 2px solid #345b35;
+}
+
+.line-text {
+  padding: 0 15px;
+  color: #345b35;
+  font-weight: bold;
+  font-size: larger;
+  margin: 2rem 0;
+}
+
+.order-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.order-step {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 2.5rem;
+  place-items: center;
+  border-radius: 50%;
+  background: #f7cac7;
+  color: #345b35;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.order-section-heading h2,
+.order-summary h2 {
+  margin: 0;
+  color: #345b35;
+  font-size: 1.25rem;
+}
+
+.order-section-heading p {
+  margin: 0.25rem 0 0;
+  color: #718071;
+  font-size: 0.92rem;
+}
+
+.customer-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.customer-fields label,
+.pickup-fields label,
+.drink-options label {
+  display: grid;
+  gap: 0.4rem;
+  color: #405642;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.customer-fields input,
+.pickup-fields input,
+.pickup-fields select,
+.drink-options select {
+  min-width: 0;
+  min-height: 2.75rem;
+  border: 1px solid #d6dfd2;
+  border-radius: 9px;
+  background: #fff;
+  color: #263a2a;
+  font: inherit;
+  padding: 0.6rem 0.75rem;
+}
+
+.customer-fields input:focus,
+.pickup-fields input:focus,
+.pickup-fields select:focus,
+.drink-options select:focus {
+  border-color: #718f68;
+  outline: 3px solid rgb(177 195 159 / 35%);
+}
+
+.pickup-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.pickup-fields input,
+.pickup-fields select {
+  min-width: 0;
+  min-height: 2.75rem;
+  border: 1px solid #d6dfd2;
+  border-radius: 9px;
+  background: #fff;
+  color: #263a2a;
+  font: inherit;
+  padding: 0.6rem 0.75rem;
+}
+
+.pickup-fields select:disabled {
+  background: #f5f6f3;
+  color: #718071;
+  cursor: not-allowed;
+}
+
+.drink-limit {
+  margin-left: auto;
+  padding: 0.4rem 0.75rem;
+  border-radius: 20px;
+  background: #f1f5ed;
+  color: #345b35;
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.order-drink-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.order-drink-card {
+  display: flex;
+  min-width: 0;
+  gap: 1rem;
+  padding: 0.85rem;
+  border: 1px solid #e3e9de;
+  border-radius: 14px;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
+}
+
+.order-drink-card.is-selected {
+  border-color: #91a783;
+  background: #f8faf6;
+}
+
+.order-drink-card > img {
+  width: 82px;
+  height: 104px;
+  flex: 0 0 82px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.order-drink-info {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.order-drink-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.order-drink-title h3 {
+  margin: 0;
+  color: #345b35;
+  font-size: 1rem;
+}
+
+.order-drink-title p {
+  margin: 0.2rem 0 0;
+  color: #80907d;
+  font-size: 0.8rem;
+}
+
+.order-drink-title > span {
+  color: #345b35;
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.drink-add-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.drink-count {
+  color: #718071;
+  font-size: 0.8rem;
+}
+
+.add-drink-button {
+  min-height: 2.25rem;
+  border: none;
+  border-radius: 8px;
+  background: #ffcacf;
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.4rem 0.65rem;
+}
+
+.add-drink-button:hover:not(:disabled) {
+  background: #f2bfc4;
+}
+
+.add-drink-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.order-items {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.order-item {
+  display: grid;
+  gap: 0.65rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid #e3e9de;
+}
+
+.order-item:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.order-item-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: #405642;
+  font-weight: 600;
+}
+
+.order-item-preferences {
+  margin: -0.35rem 0 0;
+  color: #718071;
+  font-size: 0.82rem;
+}
+
+.remove-drink-button {
+  border: 0;
+  background: transparent;
+  color: #718767;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+  text-decoration: underline;
+}
+
+.drink-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 0.5rem;
+}
+
+.drink-options-1 {
+  display: flex;
+  gap: 1rem;
+}
+
+.drink-options label {
+  gap: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.drink-options select {
+  min-height: 2.25rem;
+  padding: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.empty-menu,
+.summary-empty {
+  color: #718071;
+}
+
+.order-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 1.5rem 2rem;
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+
+.order-summary ul {
+  display: grid;
+  gap: 0.55rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  color: #657365;
+  font-size: 0.92rem;
+  list-style: none;
+}
+
+.order-summary li:not(.order-item) {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.summary-empty {
+  margin: 0.75rem 0 0;
+}
+
+.summary-total {
+  display: grid;
+  gap: 0.25rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.summary-total span {
+  color: #718071;
+  font-size: 0.85rem;
+}
+
+.summary-total strong {
+  color: #345b35;
+  font-size: 1.5rem;
+}
+
+.order-button-container {
+  display: flex;
+  justify-content: end;
+  margin-top: 1rem;
+}
+
+.order-button {
+  min-height: 2.9rem;
+  grid-column: 1 / -1;
+  border: 0;
+  border-radius: 10px;
+  background: #345b35;
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.7rem 1.25rem;
+  transition: background-color 150ms ease;
+}
+
+.order-button:hover {
+  background: #28492a;
+}
+
+.order-message {
+  grid-column: 1 / -1;
+  min-height: 1.25rem;
+  margin: -0.75rem 0 0;
+  color: #345b35;
+  text-align: center;
+}
+
+.order-error {
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+  padding: 2rem;
+  color: #345b35;
+  text-align: center;
+}
+
+.order-error p {
+  margin: 0;
+}
+
+@media (max-width: 800px) {
+  .order-page {
+    padding: 2.5rem 1rem 3.5rem;
+  }
+
+  .order-drink-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 800px) {
+  .customer-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .pickup-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .order-section-heading {
+    align-items: flex-start;
+  }
+
+  .drink-limit {
+    margin-top: 0.2rem;
+  }
+
+  .order-drink-card {
+    gap: 0.7rem;
+    padding: 0.65rem;
+  }
+
+  .order-drink-card > img {
+    width: 68px;
+    height: 96px;
+    flex-basis: 68px;
+  }
+
+  .drink-add-control {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .order-summary {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .summary-total {
+    justify-items: start;
+    text-align: left;
+  }
+}
+
+.drink-list-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.drink-list-flex > p {
+  margin: 0;
+}
+
+.drink-list-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  white-space: nowrap;
+}
+
+.drink-list-actions > p {
+  margin: 0;
+  color: #345b35;
+  font-weight: 700;
+}
+
+.order-section > .order-item {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid #e3e9de;
+}
+
+.order-section > .order-item:first-of-type {
+  border-top: 1px solid #e3e9de;
+}
+
+.order-section > .order-item:last-of-type {
+  border-bottom: 0;
+}
+
+.order-section > .order-item .order-item-heading {
+  margin: 0;
+}
+
+.order-section > .order-item .order-item-preferences {
+  display: flex;
+  gap: 1rem;
+  margin: 0.45rem 0 0;
+  padding: 0;
+  color: #718071;
+  font-size: 0.82rem;
+  list-style: none;
+}
+
+.order-summary-total {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0 0;
+  padding-top: 1rem;
+  border-top: 2px solid #e3e9de;
+  color: #405642;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.order-summary-total strong {
+  color: #345b35;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 480px) {
+  .drink-list-flex {
+    align-items: flex-start;
+  }
+
+  .drink-list-actions {
+    gap: 0.5rem;
+  }
+
+  .remove-drink-button {
+    padding: 0;
+  }
+}
+
+@media (max-width: 800px) {
+  .customer-fields {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pickup-fields {
+    display: flex;
+    flex-direction: column;
+  }
+}

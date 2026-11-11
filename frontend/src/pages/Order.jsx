@@ -39,7 +39,7 @@ function Order() {
       setError(null);
       const [drinkData, hoursResponse] = await Promise.all([
         drinkRepo.getAllDrinks(),
-        fetch(`${import.meta.env.VITE_API_URL}/hours`),
+        fetch("/api/hours"),
       ]);
       const hoursData = await hoursResponse.json();
       if (!hoursResponse.ok) {

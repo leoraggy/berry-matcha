@@ -29,7 +29,7 @@ function About() {
                   got encouraged to start a matcha business so here I am!
                 </p>
               </div>
-              <img src="headshot.jpg" alt="image of owner" width={400} />
+              <img src="headshot.jpg" alt="image of owner" width={"100%"} />
             </div>
           </div>
         </div>

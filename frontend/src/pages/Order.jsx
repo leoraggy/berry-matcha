@@ -4,6 +4,7 @@ import OrderRepository from "../data/orderRepository";
 import styles from "./styles/Order.module.css";
 import Loading from "../components/Loading";
 import Error from "../components/Error";
+import OrderSummary from "../components/OrderSummary";
 
 function Order() {
   const drinkRepo = new DrinkRepository();
@@ -298,7 +299,7 @@ function Order() {
                     ice: "Normal",
                   };
                   return (
-                    <article
+                    <div
                       className={`${styles["order-drink-card"]}${addedQuantity > 0 ? ` ${styles["is-selected"]}` : ""}`}
                       key={drink._id}
                     >
@@ -358,7 +359,7 @@ function Order() {
                           </button>
                         </div>
                       </div>
-                    </article>
+                    </div>
                   );
                 })}
               </div>
@@ -375,7 +376,7 @@ function Order() {
                     ice: "Normal",
                   };
                   return (
-                    <article
+                    <div
                       className={`${styles["order-drink-card"]}${addedQuantity > 0 ? ` ${styles["is-selected"]}` : ""}`}
                       key={drink._id}
                     >
@@ -435,65 +436,16 @@ function Order() {
                           </button>
                         </div>
                       </div>
-                    </article>
+                    </div>
                   );
                 })}
               </div>
             </div>
-            <div className={styles["order-section"]}>
-              <div className={styles["order-section-heading"]}>
-                <div>
-                  <h2 id="drinks-heading">Order Summary</h2>
-                </div>
-              </div>
-              {orderItems.length > 0 ? (
-                <>
-                  {orderItems.map((item, index) => (
-                    <div
-                      className={styles["order-item"]}
-                      key={`${item.drinkId}-${index}`}
-                    >
-                      <div className={`${styles["drink-list-flex"]} ${styles["order-item-heading"]}`}>
-                        <p>
-                          {item.quantity} × {item.name}
-                        </p>
-                        <div className={styles["drink-list-actions"]}>
-                          <p>${(item.price * item.quantity).toFixed(2)}</p>
-                          <button
-                            type="button"
-                            className={styles["remove-drink-button"]}
-                            onClick={() => removeDrinkFromList(index)}
-                            aria-label={`Remove ${item.name} from order`}
-                          >
-                            Remove
-                          </button>
-                        </div>
-                      </div>
-                      <ul className={styles["order-item-preferences"]}>
-                        <li>{item.sugar} sugar</li>
-                        <li>{item.ice} ice</li>
-                      </ul>
-                    </div>
-                  ))}
-                  <p className={styles["order-summary-total"]}>
-                    Total <strong>${totalPrice.toFixed(2)}</strong>
-                  </p>
-                  <div className={styles["order-button-container"]}>
-                    <button
-                      type="submit"
-                      className={styles["order-button"]}
-                      disabled={orderItems.length === 0}
-                    >
-                      Submit order
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <p>No drinks selected.</p>
-                </>
-              )}
-            </div>
+            <OrderSummary
+              orderItems={orderItems}
+              totalPrice={totalPrice}
+              removeDrinkFromList={removeDrinkFromList}
+            />
           </form>
         </div>
       </div>

@@ -2,6 +2,7 @@ import "/headshot.jpg";
 import "/kitchen.jpg";
 import styles from "./styles/About.module.css";
 import RevealOnScroll from "../components/RevealOnScroll";
+import FAQ from "../components/FAQ";
 function About() {
   return (
     <div className={styles["about-page"]}>
@@ -60,47 +61,12 @@ function About() {
             className={styles.kitchen}
             src="kitchen.jpg"
             alt="image of kitchen"
-            width={1000}
+            width={"100%"}
           />
         </RevealOnScroll>
 
         <RevealOnScroll className={styles.section}>
-          <h2>FAQ</h2>
-          <p>
-            <span>Q:</span> Do you take delivery?
-          </p>
-          <p>
-            <span>A:</span> Currently pickup only.
-          </p>
-          <br />
-          <p>
-            <span>Q:</span> When are you avaiable for pickups?
-          </p>
-          <p>
-            <span>A:</span> My availability changes each quarter; you can find
-            my current pickup availability here.
-          </p>
-          <br />
-          <p>
-            <span>Q:</span> Do you have toppings?
-          </p>
-          <p>
-            <span>A:</span> Not at the moment.
-          </p>
-          <br />
-          <p>
-            <span>Q:</span> Can I adjust sweetness and ice level?
-          </p>
-          <p>
-            <span>A:</span> Yes, at checkout you can adjust!
-          </p>
-          <br />
-          <p>
-            <span>Q:</span> Who made this really cute website?
-          </p>
-          <p>
-            <span>A:</span> Leo Ragual and Erica Maes! linkedin.com/leoragual
-          </p>
+          <FAQ />
         </RevealOnScroll>
       </div>
     </div>

@@ -4,20 +4,24 @@ import "/thai.JPG";
 import "/lineofmatcha.jpg";
 import "/group1.JPG";
 import "/group2.JPG";
-import styles from "./styles/Home.module.css";
 import "/instagram.png";
+import "/mobilebanner.jpg";
+import styles from "./styles/Home.module.css";
 import { Link } from "react-router-dom";
 import RevealOnScroll from "../components/RevealOnScroll";
 
 function Home() {
-  const OPTIONS = { loop: true };
-  const SLIDE_COUNT = 5;
-  const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
   return (
     <div>
       <title>Berry Matcha</title>
       <RevealOnScroll>
-        <img src="banner.jpg" alt="" className={styles.banner} />
+        <picture>
+          <source media="(min-width: 800px)" srcSet="banner.jpg" />
+          <img
+            src="mobilebanner.jpg"
+            style={{ width: "100%", height: "auto" }}
+          />
+        </picture>
       </RevealOnScroll>
       <RevealOnScroll className={styles["story-container"]}>
         <div className={styles["story-item-1"]}>

@@ -21,7 +21,7 @@
 }
 
 .instagram a:hover {
-  color: #286d2f;
+  color: #c9ffcd;
 }
 
 .grid-container img {
@@ -66,11 +66,12 @@
 .matcha {
   align-items: end;
 }
-.thai {
+
+.grid-container img.thai {
   width: 60%;
 }
 
-.group2 {
+.grid-container img.group2 {
   width: 90%;
 }
 
@@ -110,4 +111,38 @@
 .explore-drink {
   font-family: myFont;
   font-size: xxx-large;
+}
+
+@media (max-width: 800px) {
+  .story-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+    gap: 1rem;
+  }
+
+  .grid-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .grid-container img.thai {
+    width: 80%;
+  }
+
+  .grid-container img.group2 {
+    width: 100%;
+  }
+
+  .menu-container {
+    margin: 2rem 1rem;
+  }
+
+  .banner {
+  }
 }

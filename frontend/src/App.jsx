@@ -3,7 +3,7 @@ import About from "./pages/About";
 import Home from "./pages/Home";
 import Menu from "./pages/Menu";
 import Order from "./pages/Order";
-import Admin from "./pages/Admin";
+import Admin from "./admin_components/Admin";
 import DrinkDetails from "./components/DrinkDetails";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";

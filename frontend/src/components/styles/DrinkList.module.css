@@ -82,3 +82,14 @@
   padding-left: 0.5rem;
   margin: 0;
 }
+
+@media (max-width: 800px) {
+  .drinkList {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .drinkCard {
+    width: 60%;
+  }
+}

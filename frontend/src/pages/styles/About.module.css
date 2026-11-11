@@ -61,3 +61,14 @@
 .logo {
   margin: 0;
 }
+
+@media (max-width: 800px) {
+  .owner {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .section h2 {
+    text-align: center;
+  }
+}

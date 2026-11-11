@@ -1,20 +1,31 @@
+.navWrapper {
+  position: relative;
+  z-index: 10;
+}
+
 .nav-bar {
   position: relative;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: 1rem;
   background-color: #a5b794;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem clamp(0.75rem, 3vw, 1.5rem);
   font-size: large;
   box-shadow: 0 16px 10px -2px rgba(103, 99, 99, 0.157);
   font-family: myFont;
   font-size: x-large;
-  z-index: 10;
+  z-index: 1;
 }
 
 .links-container {
   display: flex;
   align-items: center;
-  gap: 0px 30px;
+  gap: 0 clamp(0.75rem, 3vw, 1.875rem);
+}
+
+.links-container p {
+  margin: 0;
 }
 
 .links-div {
@@ -47,7 +58,7 @@
 
 .image-container {
   border: 1px solid black;
-  width: 100x;
+  width: 100px;
   height: 100px;
 }
 
@@ -69,4 +80,98 @@
 
 .logo:hover {
   transform: scale(1.25);
+}
+
+.nav-bar > div:first-child {
+  flex: 0 0 auto;
+}
+
+.nav-bar img {
+  display: block;
+  height: auto;
+}
+
+.links-container img {
+  width: 50px;
+}
+
+.desktop {
+  display: block;
+}
+
+.mobile {
+  color: white;
+}
+
+.mobile:hover {
+  color: #f7cac7;
+}
+
+@media (min-width: 800px) {
+  .desktop {
+    display: block;
+  }
+  .mobile {
+    display: none;
+  }
+}
+
+.mobileModal {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  max-height: 0;
+  overflow: hidden;
+  background-color: #a5b794;
+  width: 100%;
+  visibility: hidden;
+  transition:
+    max-height 350ms ease,
+    visibility 350ms;
+}
+
+.mobileModalOpen {
+  max-height: 14rem;
+  visibility: visible;
+}
+
+.mobileLink {
+  display: block;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: large;
+  border: 1px solid #a5b794;
+  padding-left: 5%;
+}
+
+.mobileLink:hover {
+  background-color: #f7cac7;
+}
+
+.orderLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 800px) {
+  .desktop {
+    display: none;
+  }
+  .mobile {
+    display: block;
+  }
+}
+
+@media (min-width: 800px) {
+  .mobileModal {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobileModal {
+    transition: none;
+  }
 }

@@ -42,7 +42,7 @@ function DrinkDetails() {
 
   if (result.error || !result.drink) {
     return (
-      <section
+      <div
         className={`${styles["drink-details-status"]} ${styles["drink-details-error"]}`}
       >
         <span className={styles["drink-details-eyebrow"]}>A little mix-up</span>
@@ -62,7 +62,7 @@ function DrinkDetails() {
             Back to menu
           </Link>
         </div>
-      </section>
+      </div>
     );
   }
 
@@ -76,7 +76,7 @@ function DrinkDetails() {
         <span>{name}</span>
       </div>
 
-      <section className={styles["drink-details-hero"]}>
+      <div className={styles["drink-details-hero"]}>
         <div className={styles["drink-details-image-wrap"]}>
           <img
             className={styles["drink-details-image"]}
@@ -100,7 +100,7 @@ function DrinkDetails() {
             </Link>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

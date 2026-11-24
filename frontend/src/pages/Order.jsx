@@ -1,63 +1,208 @@
-import { useEffect, useState, useCallback } from "react";
-import DrinkRepository from "../data/drinkRepository";
-import OrderRepository from "../data/orderRepository";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styles from "./styles/Order.module.css";
 import Loading from "../components/Loading";
 import Error from "../components/Error";
 import OrderSummary from "../components/OrderSummary";
+import { createCheckoutSession } from "../data/checkoutService";
+import { getCart, removeCartItem } from "../data/cartService";
+
+const dayLabels = ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"];
+
+const formatLocalDate = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+const getPickupTimeOptions = (dateValue, location, now) => {
+  if (!dateValue || !Array.isArray(location?.hours)) {
+    return [];
+  }
+
+  const date = new Date(`${dateValue}T00:00:00`);
+  const dayHours = location.hours.find(
+    (entry) => entry.dayOfTheWeek === dayLabels[date.getDay()],
+  )?.hours;
+  if (typeof dayHours !== "string" || dayHours.toLowerCase() === "closed") {
+    return [];
+  }
+
+  const isToday = dateValue === formatLocalDate(now);
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const options = [];
+  for (const range of dayHours.split(",")) {
+    const match = range
+      .trim()
+      .match(
+        /^(\d{1,2})(?::(\d{2}))?\s*(am|pm)\s*-\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)$/i,
+      );
+    if (!match) {
+      continue;
+    }
+
+    const toMinutes = (hour, minute, meridiem) =>
+      ((Number(hour) % 12) + (meridiem.toLowerCase() === "pm" ? 12 : 0)) * 60 +
+      Number(minute ?? 0);
+    const start = toMinutes(match[1], match[2], match[3]);
+    const end = toMinutes(match[4], match[5], match[6]);
+    for (let time = start; time < end; time += 30) {
+      if (isToday && time <= currentMinutes) {
+        continue;
+      }
+
+      const hour24 = Math.floor(time / 60);
+      const hour12 = hour24 % 12 || 12;
+      const minute = String(time % 60).padStart(2, "0");
+      const meridiem = hour24 < 12 ? "AM" : "PM";
+      options.push({
+        value: `${String(hour24).padStart(2, "0")}:${minute}`,
+        label: `${hour12}:${minute} ${meridiem}`,
+      });
+    }
+  }
+
+  return options;
+};
 
 function Order() {
-  const drinkRepo = new DrinkRepository();
-  const orderRepo = new OrderRepository();
-  const MAX_DRINKS = 5;
-  const [drinks, setDrinks] = useState([]);
-  const [pickupHours, setPickupHours] = useState([]);
-  const [drinkOptions, setDrinkOptions] = useState({});
+  const [cart, setCart] = useState({
+    items: [],
+    totalQuantity: 0,
+    totalPrice: 0,
+  });
+  const [pickupLocations, setPickupLocations] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [checkoutError, setCheckoutError] = useState(null);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [removingItemId, setRemovingItemId] = useState(null);
   const [formData, setFormData] = useState({
-    customerName: "",
-    phoneNumber: "",
-    customerEmail: "",
-    totalPrice: "",
     pickupDate: "",
     pickupTime: "",
-    drinks: [],
+    location: "",
   });
-
-  const matchaDrinks = drinks.filter((drink) => {
-    return drink.category == "Matcha" && drink.isAvailable == true;
-  });
-
-  const teaDrinks = drinks.filter((drink) => {
-    return drink.category == "Tea" && drink.isAvailable == true;
-  });
-
-  const fetchDrinks = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const [drinkData, hoursResponse] = await Promise.all([
-        drinkRepo.getAllDrinks(),
-        fetch("/api/hours"),
-      ]);
-      const hoursData = await hoursResponse.json();
-      if (!hoursResponse.ok) {
-        throw new Error(hoursData.message || "Unable to load pickup hours.");
-      }
-      setDrinks(drinkData);
-      setPickupHours(hoursData);
-    } catch (error) {
-      setError("Sorry, an error occured. Please try again. Matcha spilled.");
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
 
   useEffect(() => {
-    fetchDrinks();
-  }, [fetchDrinks]);
+    let active = true;
+
+    const loadOrderData = async () => {
+      try {
+        const [hoursResponse, cartData] = await Promise.all([
+          fetch("/api/hours"),
+          getCart(),
+        ]);
+        const hoursData = await hoursResponse.json();
+        if (!hoursResponse.ok) {
+          throw new Error(hoursData.message || "Unable to load pickup hours.");
+        }
+        if (!Array.isArray(hoursData)) {
+          throw new Error("Pickup hours response was not a list of locations.");
+        }
+
+        if (active) {
+          setCart(cartData);
+          setPickupLocations(hoursData);
+        }
+      } catch (requestError) {
+        if (active) {
+          setError(requestError.message || "Unable to load your order.");
+          console.error("Unable to load order data:", requestError);
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadOrderData();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const orderItems = cart.items;
+
+  const now = new Date();
+  const selectedLocation = pickupLocations.find(
+    (location) => location.name === formData.location,
+  );
+  const minDaysAhead =
+    selectedLocation?.name === "Southcenter Macy's Court" ? 4 : 0;
+  const maxDaysAhead = 14;
+  const pickupDates = [];
+  if (selectedLocation) {
+    for (
+      let daysAhead = minDaysAhead;
+      daysAhead <= maxDaysAhead;
+      daysAhead += 1
+    ) {
+      const date = new Date(now);
+      date.setHours(0, 0, 0, 0);
+      date.setDate(date.getDate() + daysAhead);
+      const value = formatLocalDate(date);
+      if (getPickupTimeOptions(value, selectedLocation, now).length > 0) {
+        pickupDates.push({
+          value,
+          label: new Intl.DateTimeFormat("en-US", {
+            weekday: "long",
+            month: "long",
+            day: "numeric",
+          }).format(date),
+        });
+      }
+    }
+  }
+  const pickupTimeOptions = getPickupTimeOptions(
+    formData.pickupDate,
+    selectedLocation,
+    now,
+  );
+
+  const removeDrinkFromList = async (cartItemId) => {
+    setCheckoutError(null);
+    setRemovingItemId(cartItemId);
+    try {
+      setCart(await removeCartItem(cartItemId));
+    } catch (removeError) {
+      setCheckoutError(removeError.message || "Unable to remove this drink.");
+    } finally {
+      setRemovingItemId(null);
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (isCheckingOut || orderItems.length === 0) {
+      return;
+    }
+
+    const submittedFields = new FormData(event.currentTarget);
+    const order = {
+      name: submittedFields.get("name")?.toString().trim(),
+      phone: submittedFields.get("phone")?.toString().trim(),
+      email: submittedFields.get("email")?.toString().trim(),
+      pickupDate: formData.pickupDate,
+      pickupTime: formData.pickupTime,
+      location: formData.location,
+    };
+
+    setCheckoutError(null);
+    setIsCheckingOut(true);
+    try {
+      const session = await createCheckoutSession(order);
+      window.location.assign(session.url);
+    } catch (checkoutRequestError) {
+      console.error("Checkout failed:", checkoutRequestError);
+      setCheckoutError(
+        checkoutRequestError.message ||
+          "Unable to start checkout. Please try again.",
+      );
+      setIsCheckingOut(false);
+    }
+  };
 
   if (loading) {
     return <Loading />;
@@ -67,125 +212,9 @@ function Order() {
     return <Error error={error} />;
   }
 
-  const orderItems = formData.drinks;
-  const totalDrinks = orderItems.reduce(
-    (total, item) => total + item.quantity,
-    0,
+  const hasUnavailableItems = orderItems.some(
+    (item) => !item.isAvailable || item.hasUnavailableToppings,
   );
-
-  const totalPrice = orderItems.reduce((total, item) => {
-    return total + item.price * item.quantity;
-  }, 0);
-
-  const formatLocalDate = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-  const today = formatLocalDate(new Date());
-  const dayLabels = ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"];
-  const selectedDate = formData.pickupDate
-    ? new Date(`${formData.pickupDate}T00:00:00`)
-    : null;
-  const selectedDayHours = selectedDate
-    ? pickupHours.find(
-        (entry) => entry.dayOfTheWeek === dayLabels[selectedDate.getDay()],
-      )?.hours
-    : null;
-  const pickupTimeOptions = [];
-  if (selectedDayHours && selectedDayHours.toLowerCase() !== "closed") {
-    for (const range of selectedDayHours.split(",")) {
-      const match = range
-        .trim()
-        .match(
-          /^(\d{1,2}):(\d{2})\s*(am|pm)\s*-\s*(\d{1,2}):(\d{2})\s*(am|pm)$/i,
-        );
-      if (!match) {
-        continue;
-      }
-      const toMinutes = (hour, minute, meridiem) =>
-        ((Number(hour) % 12) + (meridiem.toLowerCase() === "pm" ? 12 : 0)) *
-          60 +
-        Number(minute);
-      const start = toMinutes(match[1], match[2], match[3]);
-      const end = toMinutes(match[4], match[5], match[6]);
-      for (let time = start; time < end; time += 30) {
-        const hour24 = Math.floor(time / 60);
-        const hour12 = hour24 % 12 || 12;
-        const minute = String(time % 60).padStart(2, "0");
-        const meridiem = hour24 < 12 ? "AM" : "PM";
-        const value = `${String(hour24).padStart(2, "0")}:${minute}`;
-        if (
-          formData.pickupDate !== today ||
-          time > new Date().getHours() * 60 + new Date().getMinutes()
-        ) {
-          pickupTimeOptions.push({
-            value,
-            label: `${hour12}:${minute} ${meridiem}`,
-          });
-        }
-      }
-    }
-  }
-
-  const updateDrinkOption = (drinkId, option, value) => {
-    setDrinkOptions((currentOptions) => ({
-      ...currentOptions,
-      [drinkId]: {
-        sugar: "Full",
-        ice: "Normal",
-        ...currentOptions[drinkId],
-        [option]: value,
-      },
-    }));
-  };
-
-  const addDrinkToList = (drink) => {
-    const options = drinkOptions[drink._id] ?? {
-      sugar: "Full",
-      ice: "Normal",
-    };
-
-    setFormData((currentData) => ({
-      ...currentData,
-      drinks: [
-        ...currentData.drinks,
-        {
-          drinkId: drink._id,
-          name: drink.name,
-          price: Number(drink.price),
-          quantity: 1,
-          sugar: options.sugar,
-          ice: options.ice,
-        },
-      ],
-    }));
-  };
-
-  const removeDrinkFromList = (indexToRemove) => {
-    setFormData((currentData) => ({
-      ...currentData,
-      drinks: currentData.drinks.filter((_, index) => index !== indexToRemove),
-    }));
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const submittedFields = new FormData(event.currentTarget);
-    const order = {
-      customerName:
-        `${submittedFields.get("firstName")} ${submittedFields.get("lastName")}`.trim(),
-      phoneNumber: submittedFields.get("phone"),
-      customerEmail: submittedFields.get("email"),
-      totalPrice: Number(totalPrice.toFixed(2)),
-      pickupDate: formData.pickupDate,
-      pickupTime: formData.pickupTime,
-      drinks: orderItems,
-    };
-
-    console.log(order);
-  };
 
   return (
     <div className={styles["order-page"]}>
@@ -199,12 +228,8 @@ function Order() {
             <div className={styles["order-section"]}>
               <div className={styles["customer-fields"]}>
                 <label>
-                  First name
-                  <input type="text" name="firstName" required />
-                </label>
-                <label>
-                  Last name
-                  <input type="text" name="lastName" required />
+                  Name
+                  <input type="text" name="name" required />
                 </label>
                 <label>
                   Email
@@ -216,22 +241,50 @@ function Order() {
                 </label>
               </div>
             </div>
+
             <div className={styles["order-section"]}>
               <div className={styles["order-section-heading"]}>
                 <div>
                   <h2>Pickup details</h2>
-                  <p>Choose a date and an available time slot.</p>
+                  <p>
+                    Available pickup times depend on the selected location and
+                    date.
+                  </p>
                 </div>
               </div>
               <div className={styles["pickup-fields"]}>
                 <label>
+                  Pickup location
+                  <select
+                    name="location"
+                    required
+                    value={formData.location}
+                    onChange={(event) =>
+                      setFormData((currentData) => ({
+                        ...currentData,
+                        location: event.target.value,
+                        pickupDate: "",
+                        pickupTime: "",
+                      }))
+                    }
+                  >
+                    <option value="">Select a pickup location</option>
+                    {pickupLocations.map((location) => (
+                      <option key={location.name} value={location.name}>
+                        {location.address
+                          ? `${location.name} - ${location.address}`
+                          : location.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
                   Pickup date
-                  <input
-                    type="date"
+                  <select
                     name="pickupDate"
-                    min={today}
                     required
                     value={formData.pickupDate}
+                    disabled={!selectedLocation}
                     onChange={(event) =>
                       setFormData((currentData) => ({
                         ...currentData,
@@ -239,7 +292,20 @@ function Order() {
                         pickupTime: "",
                       }))
                     }
-                  />
+                  >
+                    <option value="">
+                      {!selectedLocation
+                        ? "Select a location first"
+                        : pickupDates.length
+                          ? "Select an available date"
+                          : "No available dates in the next 2 weeks"}
+                    </option>
+                    {pickupDates.map((date) => (
+                      <option key={date.value} value={date.value}>
+                        {date.label}
+                      </option>
+                    ))}
+                  </select>
                 </label>
                 <label>
                   Pickup time
@@ -273,176 +339,30 @@ function Order() {
                 </label>
               </div>
             </div>
+
             <div className={styles["order-section"]}>
               <div className={styles["order-section-heading"]}>
                 <div>
-                  <h2 id="drinks-heading">Choose your drinks</h2>
-                  <p>Add up to {MAX_DRINKS} drinks to your order.</p>
+                  <h2>Order Summary</h2>
+                  <p>
+                    Add drinks from their detail pages.{" "}
+                    <Link to="/menu">Browse the menu</Link>
+                  </p>
                 </div>
                 <span className={styles["drink-limit"]}>
-                  {totalDrinks} / {MAX_DRINKS}
+                  {cart.totalQuantity} / 5
                 </span>
               </div>
-              <div className={styles["line-container"]}>
-                <span className={styles["line-text"]}>Matcha</span>
-              </div>
-              <div className={styles["order-drink-list"]}>
-                {matchaDrinks.map((drink) => {
-                  const addedQuantity = orderItems
-                    .filter((item) => item.drinkId === drink._id)
-                    .reduce((total, item) => total + item.quantity, 0);
-                  const options = drinkOptions[drink._id] ?? {
-                    sugar: "Full",
-                    ice: "Normal",
-                  };
-                  return (
-                    <div
-                      className={`${styles["order-drink-card"]}${addedQuantity > 0 ? ` ${styles["is-selected"]}` : ""}`}
-                      key={drink._id}
-                    >
-                      <img src={drink.imageLink} alt={drink.name} />
-                      <div className={styles["order-drink-info"]}>
-                        <div className={styles["order-drink-title"]}>
-                          <div>
-                            <h3>{drink.name}</h3>
-                            <p>{drink.category}</p>
-                          </div>
-                          <span>${Number(drink.price).toFixed(2)}</span>
-                        </div>
-                        <div className={styles["drink-options"]}>
-                          <div className={styles["drink-options-1"]}>
-                            <label>
-                              Sugar
-                              <select
-                                value={options.sugar}
-                                onChange={(event) =>
-                                  updateDrinkOption(
-                                    drink._id,
-                                    "sugar",
-                                    event.target.value,
-                                  )
-                                }
-                              >
-                                <option value="Full">Full</option>
-                                <option value="Half">Half</option>
-                                <option value="Zero">Zero</option>
-                              </select>
-                            </label>
-                            <label>
-                              Ice
-                              <select
-                                value={options.ice}
-                                onChange={(event) =>
-                                  updateDrinkOption(
-                                    drink._id,
-                                    "ice",
-                                    event.target.value,
-                                  )
-                                }
-                              >
-                                <option value="Normal">Normal</option>
-                                <option value="Less">Less</option>
-                                <option value="No">No</option>
-                              </select>
-                            </label>
-                          </div>
-                          <button
-                            type="button"
-                            className={styles["add-drink-button"]}
-                            onClick={() => addDrinkToList(drink)}
-                            disabled={totalDrinks >= MAX_DRINKS}
-                          >
-                            + Add drink
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              <div className={styles["line-container"]}>
-                <span className={styles["line-text"]}>Tea</span>
-              </div>
-              <div className={styles["order-drink-list"]}>
-                {teaDrinks.map((drink) => {
-                  const addedQuantity = orderItems
-                    .filter((item) => item.drinkId === drink._id)
-                    .reduce((total, item) => total + item.quantity, 0);
-                  const options = drinkOptions[drink._id] ?? {
-                    sugar: "Full",
-                    ice: "Normal",
-                  };
-                  return (
-                    <div
-                      className={`${styles["order-drink-card"]}${addedQuantity > 0 ? ` ${styles["is-selected"]}` : ""}`}
-                      key={drink._id}
-                    >
-                      <img src={drink.imageLink} alt={drink.name} />
-                      <div className={styles["order-drink-info"]}>
-                        <div className={styles["order-drink-title"]}>
-                          <div>
-                            <h3>{drink.name}</h3>
-                            <p>{drink.category}</p>
-                          </div>
-                          <span>${Number(drink.price).toFixed(2)}</span>
-                        </div>
-                        <div className={styles["drink-options"]}>
-                          <div className={styles["drink-options-1"]}>
-                            <label>
-                              Sugar
-                              <select
-                                value={options.sugar}
-                                onChange={(event) =>
-                                  updateDrinkOption(
-                                    drink._id,
-                                    "sugar",
-                                    event.target.value,
-                                  )
-                                }
-                              >
-                                <option value="Full">Full</option>
-                                <option value="Half">Half</option>
-                                <option value="Zero">Zero</option>
-                              </select>
-                            </label>
-                            <label>
-                              Ice
-                              <select
-                                value={options.ice}
-                                onChange={(event) =>
-                                  updateDrinkOption(
-                                    drink._id,
-                                    "ice",
-                                    event.target.value,
-                                  )
-                                }
-                              >
-                                <option value="Normal">Normal</option>
-                                <option value="Less">Less</option>
-                                <option value="No">No</option>
-                              </select>
-                            </label>
-                          </div>
-                          <button
-                            type="button"
-                            className={styles["add-drink-button"]}
-                            onClick={() => addDrinkToList(drink)}
-                            disabled={totalDrinks >= MAX_DRINKS}
-                          >
-                            + Add drink
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              <OrderSummary
+                orderItems={orderItems}
+                totalPrice={cart.totalPrice}
+                removeDrinkFromList={removeDrinkFromList}
+                removingItemId={removingItemId}
+                checkoutError={checkoutError}
+                isCheckingOut={isCheckingOut}
+                hasUnavailableItems={hasUnavailableItems}
+              />
             </div>
-            <OrderSummary
-              orderItems={orderItems}
-              totalPrice={totalPrice}
-              removeDrinkFromList={removeDrinkFromList}
-            />
           </form>
         </div>
       </div>

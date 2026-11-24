@@ -1,4 +1,4 @@
-import Hours from "../model/hours.js";
+import Hours from "../model/hours.model.js";
 
 export const getHours = async (req, res) => {
   try {
@@ -11,7 +11,7 @@ export const getHours = async (req, res) => {
 
 export const updateHours = async (req, res) => {
   try {
-    const hours = await Hours.findbyIdAndUpdate(req.params.id, req.body);
+    const hours = await Hours.findByIdAndUpdate(req.params.id, req.body);
     res.json(hours);
   } catch (error) {
     res.status(400).json({ message: error.message });

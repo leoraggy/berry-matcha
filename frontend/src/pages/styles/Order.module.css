@@ -24,7 +24,7 @@
 .orderHeader {
   margin-bottom: 2.5rem;
   text-align: center;
-  font-family: myFont;
+  font-family: satisfyRegular;
   color: #345b35;
   margin: 0;
   font-size: 3rem;
@@ -52,7 +52,7 @@
   display: flex;
   align-items: center;
   text-align: center;
-  font-family: myFont;
+  font-family: satisfyRegular;
   font-size: x-large;
 }
 
@@ -106,7 +106,7 @@
 
 .customer-fields {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
 }
 
@@ -144,7 +144,7 @@
 
 .pickup-fields {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
 }
 
@@ -627,4 +627,16 @@
     margin: 0;
     padding: 0;
   }
+}
+
+.toppings {
+  display: flex;
+  flex-direction: column;
+}
+
+input[type="checkbox"] {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: 1.5rem;
+  margin-top: 0.5rem;
 }

@@ -20,18 +20,28 @@ const orderDrinkSchema = new mongoose.Schema(
       enum: ["Normal", "Less", "No"],
       default: "Normal",
     },
+    toppings: [String],
   },
   { _id: false },
 );
 
 const orderSchema = new mongoose.Schema(
   {
-    customerName: { type: String, required: true },
-    phoneNumber: { type: String, required: true },
-    customerEmail: { type: String, required: true },
+    name: { type: String, required: true },
+    phone: { type: String, required: true },
+    email: { type: String, required: true },
     totalPrice: { type: Number, required: true },
-    pickupDate: Date,
-    pickupTime: String,
+    status: {
+      type: String,
+      enum: ["pending", "paid"],
+      default: "pending",
+    },
+    pickupDate: { type: Date, required: true },
+    pickupTime: { type: String, required: true },
+    location: {
+      type: String,
+      required: true,
+    },
     drinks: {
       type: [orderDrinkSchema],
       required: true,

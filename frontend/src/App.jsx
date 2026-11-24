@@ -3,12 +3,12 @@ import About from "./pages/About";
 import Home from "./pages/Home";
 import Menu from "./pages/Menu";
 import Order from "./pages/Order";
-import Admin from "./admin_components/Admin";
+import AdminRoute from "./admin_components/AdminRoute";
 import DrinkDetails from "./components/DrinkDetails";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
 import Loading from "./components/Loading";
-
+import Success from "./pages/Success";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -36,11 +36,15 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin",
-        element: <Admin />,
+        element: <AdminRoute />,
       },
       {
         path: "/loading",
         element: <Loading />,
+      },
+      {
+        path: "success",
+        element: <Success />,
       },
       {
         path: "*",

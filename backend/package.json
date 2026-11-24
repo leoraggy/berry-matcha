@@ -4,9 +4,10 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
+    "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "seed": "node src/seed.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "",
@@ -14,14 +15,22 @@
   "type": "module",
   "dependencies": {
     "@google-cloud/storage": "^8.4.0",
+    "connect-mongo": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^18.0.9",
     "express": "^5.3.0",
+    "express-rate-limit": "^8.7.5",
+    "express-session": "^1.19.0",
     "mongodb": "^7.7.0",
     "mongoose": "^9.11.4",
-    "multer": "^2.5.0"
+    "multer": "^2.5.0",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "stripe": "^23.1.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.11"
+    "nodemon": "^3.1.11",
+    "supertest": "^7.3.2",
+    "vitest": "^4.1.12"
   }
 }

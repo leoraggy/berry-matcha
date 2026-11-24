@@ -7,7 +7,9 @@ class OrderRepository {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || `Request failed with status ${response.status}`);
+        throw new Error(
+          data.message || `Request failed with status ${response.status}`,
+        );
       }
 
       return data;
@@ -47,5 +49,4 @@ class OrderRepository {
     });
   }
 }
-
 export default OrderRepository;

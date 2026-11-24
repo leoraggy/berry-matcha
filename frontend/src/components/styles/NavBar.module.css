@@ -13,7 +13,7 @@
   padding: 0.5rem clamp(0.75rem, 3vw, 1.5rem);
   font-size: large;
   box-shadow: 0 16px 10px -2px rgba(103, 99, 99, 0.157);
-  font-family: myFont;
+  font-family: satisfyRegular;
   font-size: x-large;
   z-index: 1;
 }

@@ -24,7 +24,6 @@
 .container {
   display: flex;
   flex-direction: column;
-  margin-left: 10%;
 }
 
 @media (min-width: 800px) {

@@ -1,5 +1,5 @@
-import Drink from "../model/drink.js";
-import Order from "../model/order.js";
+import Drink from "../model/drink.model.js";
+import Order from "../model/order.model.js";
 
 export const getDrinkSales = async (req, res) => {
   try {

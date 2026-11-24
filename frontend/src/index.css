@@ -12,6 +12,6 @@ html {
 }
 
 @font-face {
-  font-family: myFont; /* set name */
-  src: url(/Satisfy-Regular.ttf); /* url of the font */
+  font-family: satisfyRegular;
+  src: url(/Satisfy-Regular.ttf);
 }

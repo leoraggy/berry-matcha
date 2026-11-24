@@ -18,7 +18,7 @@ const emptyDrink = {
   isAvailable: true,
 };
 
-function Admin() {
+function Admin({ adminEmail }) {
   const [drinks, setDrinks] = useState([]);
   const [drinkSales, setDrinkSales] = useState([]);
   const [formData, setFormData] = useState(emptyDrink);
@@ -32,7 +32,25 @@ function Admin() {
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [logoutError, setLogoutError] = useState("");
   const addDrinkButton = useRef(null);
+
+  const handleLogout = async () => {
+    setLogoutError("");
+    try {
+      const response = await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      if (!response.ok) {
+        throw new Error(`Logout failed with status ${response.status}`);
+      }
+      window.location.assign("/");
+    } catch (error) {
+      console.error("Unable to log out admin:", error);
+      setLogoutError("Unable to log out. Please try again.");
+    }
+  };
 
   const clearSelectedImage = useCallback(() => {
     setSelectedImage(null);
@@ -211,6 +229,7 @@ function Admin() {
       <SimpleBarChart data={drinkSales} />
       <header className={styles["admin-header"]}>
         <h1>Drink Admin</h1>
+        <p>Signed in as {adminEmail}</p>
         <button
           ref={addDrinkButton}
           type="button"
@@ -219,7 +238,19 @@ function Admin() {
         >
           + Add a new drink
         </button>
+        <button
+          type="button"
+          className={styles["admin-secondary-button"]}
+          onClick={handleLogout}
+        >
+          Sign out
+        </button>
       </header>
+      {logoutError && (
+        <p className={`${styles["admin-action-message"]} ${styles["is-error"]}`} role="alert">
+          {logoutError}
+        </p>
+      )}
       {deleteMessage && (
         <p
           className={`${styles["admin-action-message"]}${deleteMessage.isError ? ` ${styles["is-error"]}` : ""}`}

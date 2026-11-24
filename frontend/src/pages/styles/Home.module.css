@@ -109,7 +109,7 @@
 }
 
 .explore-drink {
-  font-family: myFont;
+  font-family: satisfyRegular;
   font-size: xxx-large;
 }
 
@@ -129,6 +129,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 0;
+    padding: 0;
   }
 
   .grid-container img.thai {
@@ -141,8 +143,5 @@
 
   .menu-container {
     margin: 2rem 1rem;
-  }
-
-  .banner {
   }
 }

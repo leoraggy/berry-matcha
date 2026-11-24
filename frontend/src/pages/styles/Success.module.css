@@ -1,0 +1,60 @@
+.background {
+  background-color: #fed9e9;
+  margin: 0;
+  border: 1px solid #fed9e9;
+  min-height: 85vh;
+}
+
+.successContainer {
+  background-color: white;
+  margin: 0 auto;
+  padding: 3rem;
+  max-width: 800px;
+}
+
+.orderTitle {
+  margin-bottom: 2.5rem;
+  text-align: center;
+  color: #345b35;
+
+  margin: 0;
+  padding-top: 2rem;
+}
+
+.berryMatcha {
+  text-align: center;
+  color: #7b1748;
+
+  font-family: satisfyRegular;
+}
+
+.receiptItem {
+  border-bottom: 1px dashed #d1d5db;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.receiptItem:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.drinkHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.drinkModifiers {
+  padding-left: 16px;
+  margin-top: 4px;
+  color: #6b7280;
+  font-size: 0.8rem;
+}
+
+.modifierLine {
+  margin: 2px 0;
+}

@@ -18,7 +18,7 @@ const emptyDrink = {
   isAvailable: true,
 };
 
-function Admin({ adminEmail }) {
+function Admin() {
   const [drinks, setDrinks] = useState([]);
   const [drinkSales, setDrinkSales] = useState([]);
   const [formData, setFormData] = useState(emptyDrink);
@@ -229,7 +229,6 @@ function Admin({ adminEmail }) {
       <SimpleBarChart data={drinkSales} />
       <header className={styles["admin-header"]}>
         <h1>Drink Admin</h1>
-        <p>Signed in as {adminEmail}</p>
         <button
           ref={addDrinkButton}
           type="button"
@@ -247,7 +246,10 @@ function Admin({ adminEmail }) {
         </button>
       </header>
       {logoutError && (
-        <p className={`${styles["admin-action-message"]} ${styles["is-error"]}`} role="alert">
+        <p
+          className={`${styles["admin-action-message"]} ${styles["is-error"]}`}
+          role="alert"
+        >
           {logoutError}
         </p>
       )}

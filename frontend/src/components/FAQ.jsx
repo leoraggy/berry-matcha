@@ -6,9 +6,12 @@ const accordionData = [
   {
     title: "When are you available for pickups?",
     content:
-      "My availability changes each quarter. You can find my current pickup availability here.",
+      "My availability changes each quarter. You can find my current pickup availability in the footer.",
   },
-  { title: "Do you have toppings?", content: "Not at the moment." },
+  {
+    title: "Do you have toppings?",
+    content: "Yes, currently have cream topping.",
+  },
   {
     title: "Can I adjust sweetness and ice level?",
     content: "Yes, at checkout you can adjust!",
@@ -16,7 +19,8 @@ const accordionData = [
   {
     title: "Who made this website?",
     content:
-      "Leo and Erica! Leo Ragual is the developer, Erica made the cute logo and art. For contact: linkedin.com/in/leoragual/",
+      "Leo and Erica! Leo Ragual is the developer, Erica made the cute logo and art. To contact the developer:",
+    linkedIn: "https://www.linkedin.com/in/leoragual/",
   },
 ];
 
@@ -56,6 +60,14 @@ function FAQ() {
               >
                 <div className={styles.panelContent}>
                   <p>{item.content}</p>
+                  {item.linkedIn && (
+                    <a
+                      href="https://www.linkedin.com/in/leoragual/"
+                      target="_blank"
+                    >
+                      {"linkedin.com/in/leoragual/"}
+                    </a>
+                  )}
                 </div>
               </div>
             </div>

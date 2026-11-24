@@ -63,10 +63,12 @@ function AdminRoute() {
     );
   }
   if (status === "error") {
-    return <Error error="Unable to verify your admin login. Please refresh to try again." />;
+    return (
+      <Error error="Unable to verify your admin login. Please refresh to try again." />
+    );
   }
 
-  return <Admin adminEmail={adminEmail} />;
+  return <Admin />;
 }
 
 export default AdminRoute;

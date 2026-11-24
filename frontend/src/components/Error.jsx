@@ -14,7 +14,7 @@ function Error({ error }) {
     >
       <h3>{error}</h3>
       <img
-        src="error.png"
+        src="/error.png"
         alt="error image"
         width={200}
         style={{ margin: "auto" }}

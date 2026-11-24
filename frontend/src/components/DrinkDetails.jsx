@@ -1,68 +1,17 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import DrinkRepository from "../data/drinkRepository";
-import { addCartItem, getAvailableToppings } from "../data/cartService";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { addCartItem } from "../data/cartService";
 import styles from "./styles/DrinkDetails.module.css";
-const drinkRepository = new DrinkRepository();
 
-function DrinkDetails() {
-  const { id } = useParams();
+function DrinkDetails({ drink, toppings }) {
   const navigate = useNavigate();
-  const [retryAttempt, setRetryAttempt] = useState(0);
-  const [result, setResult] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [sugar, setSugar] = useState("Full");
   const [ice, setIce] = useState("Normal");
-  const [availableToppings, setAvailableToppings] = useState([]);
   const [selectedToppings, setSelectedToppings] = useState([]);
-  const [toppingsError, setToppingsError] = useState("");
   const [isAdding, setIsAdding] = useState(false);
   const [cartError, setCartError] = useState("");
   const [cartMessage, setCartMessage] = useState("");
-  const requestKey = `${id}:${retryAttempt}`;
-
-  useEffect(() => {
-    let isCurrentRequest = true;
-
-    getAvailableToppings()
-      .then((toppings) => {
-        if (isCurrentRequest) {
-          setAvailableToppings(toppings);
-        }
-      })
-      .catch((error) => {
-        if (isCurrentRequest) {
-          setToppingsError(
-            error.message || "Unable to load available toppings.",
-          );
-        }
-      });
-
-    return () => {
-      isCurrentRequest = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    let isCurrentRequest = true;
-
-    drinkRepository
-      .getDrinkById(id)
-      .then((drink) => {
-        if (isCurrentRequest) {
-          setResult({ requestKey, drink });
-        }
-      })
-      .catch(() => {
-        if (isCurrentRequest) {
-          setResult({ requestKey, error: true });
-        }
-      });
-
-    return () => {
-      isCurrentRequest = false;
-    };
-  }, [id, requestKey]);
 
   const handleAddToCart = async () => {
     setIsAdding(true);
@@ -71,7 +20,7 @@ function DrinkDetails() {
 
     try {
       await addCartItem({
-        drinkId: result.drink._id,
+        drinkId: drink._id,
         quantity,
         sugar,
         ice,
@@ -85,42 +34,7 @@ function DrinkDetails() {
     }
   };
 
-  if (result?.requestKey !== requestKey) {
-    return (
-      <div className={styles["drink-details-status"]} role="status">
-        <img src="/loading.gif" alt="" width={100} />
-        <p>Whisking up your drink details...</p>
-      </div>
-    );
-  }
-
-  if (result.error || !result.drink) {
-    return (
-      <div
-        className={`${styles["drink-details-status"]} ${styles["drink-details-error"]}`}
-      >
-        <span className={styles["drink-details-eyebrow"]}>A little mix-up</span>
-        <h1>We couldn't find that drink</h1>
-        <p>
-          It may have moved off the menu. Please try again or browse our drinks.
-        </p>
-        <div className={styles["drink-details-actions"]}>
-          <button
-            className={styles["drink-details-button"]}
-            onClick={() => setRetryAttempt((attempt) => attempt + 1)}
-            type="button"
-          >
-            Try again
-          </button>
-          <Link className={styles["drink-details-link"]} to="/menu">
-            Back to menu
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  const { name, price, category, imageLink, description } = result.drink;
+  const { name, price, category, imageLink, description } = drink;
 
   return (
     <div className={styles["drink-details-page"]}>
@@ -185,10 +99,10 @@ function DrinkDetails() {
                   <option value="No">No</option>
                 </select>
               </label>
-              {availableToppings.length > 0 && (
+              {toppings.length > 0 && (
                 <fieldset className={styles["drink-details-toppings"]}>
                   <legend>Add toppings</legend>
-                  {availableToppings.map((topping) => (
+                  {toppings.map((topping) => (
                     <label key={topping._id}>
                       <input
                         type="checkbox"
@@ -216,21 +130,23 @@ function DrinkDetails() {
                 className={styles["drink-details-button"]}
                 type="button"
                 onClick={handleAddToCart}
-                disabled={isAdding || !result.drink.isAvailable}
+                disabled={isAdding || !drink.isAvailable}
               >
                 {isAdding ? "Adding..." : "Add to Cart"}
               </button>
             </div>
           </div>
-          {toppingsError && (
+          {cartError && (
             <p className={styles["drink-details-cart-error"]} role="alert">
-              {toppingsError}
+              {cartError}
             </p>
           )}
-          {cartError && <p className={styles["drink-details-cart-error"]} role="alert">{cartError}</p>}
           {cartMessage && (
             <p className={styles["drink-details-cart-message"]} role="status">
-              {cartMessage} <button type="button" onClick={() => navigate("/order")}>View cart</button>
+              {cartMessage}{" "}
+              <button type="button" onClick={() => navigate("/order")}>
+                View cart
+              </button>
             </p>
           )}
         </div>

@@ -1,7 +1,4 @@
 import styles from "./styles/Footer.module.css";
-import "/favicon.png";
-import "/instagram.png";
-import "/email.png";
 import { Link } from "react-router-dom";
 function Footer() {
   return (
@@ -9,14 +6,16 @@ function Footer() {
       <footer className={styles.footer}>
         <div className={styles.container}>
           <img
-            src="favicon.png"
+            src="/favicon.png"
             alt="logo"
             width={150}
             className={styles["grid-item"]}
           />
           <div className={`${styles.contact} ${styles["grid-item"]}`}>
             <h3>Contact Me</h3>
-            <Link href="/about">About</Link>
+            <Link to="/about">About</Link>
+            <br /> <br />
+            <Link to="/admin">Admin</Link>
             <p>LinCr@cwu.edu</p>
             <p>425-757-7587</p>
           </div>
@@ -30,10 +29,10 @@ function Footer() {
         <div className={styles["bottom-footer"]}>
           <p>Berry Matcha · 2026</p>
           <a href="mailto:LinCr@cwu.edu">
-            <img src="email.png" alt="email" width={25} />
+            <img src="/email.png" alt="email" width={25} />
           </a>
           <a href="https://www.instagram.com/berry_matcha.co/" target="_blank">
-            <img src="instagram.png" alt="instagram" width={25} />
+            <img src="/instagram.png" alt="instagram" width={25} />
           </a>
         </div>
       </footer>

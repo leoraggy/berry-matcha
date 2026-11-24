@@ -2,9 +2,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import About from "./pages/About";
 import Home from "./pages/Home";
 import Menu from "./pages/Menu";
+import MenuItem from "./pages/MenuItem";
 import Order from "./pages/Order";
 import AdminRoute from "./admin_components/AdminRoute";
-import DrinkDetails from "./components/DrinkDetails";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
 import Loading from "./components/Loading";
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/menu/:id",
-        element: <DrinkDetails />,
+        element: <MenuItem />,
       },
       {
         path: "/order",

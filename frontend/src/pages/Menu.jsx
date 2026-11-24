@@ -18,7 +18,7 @@ function Menu() {
       const data = await drinkRepo.getAllDrinks();
       setDrinks(data);
     } catch (error) {
-      setError("Sorry, an error occured. Please try again. Matcha spilled.");
+      setError(`Sorry, an error occured. Please try again. Matcha spilled.`);
       console.error(error);
     } finally {
       setLoading(false);
@@ -40,12 +40,7 @@ function Menu() {
   return (
     <>
       <title>Berry Matcha | Menu</title>
-      <DrinkList
-        drinks={drinks}
-        loading={loading}
-        error={error}
-        onRetry={fetchDrinks}
-      />
+      <DrinkList drinks={drinks} />
     </>
   );
 }

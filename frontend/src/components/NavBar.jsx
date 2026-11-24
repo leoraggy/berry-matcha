@@ -1,9 +1,6 @@
 import { Link } from "react-router-dom";
 import styles from "./styles/NavBar.module.css";
 import { useState } from "react";
-import "/berrymatcha.png";
-import "/cart.png";
-import "/carthover.png";
 import Hamburger from "hamburger-react";
 
 function NavBar() {
@@ -16,7 +13,7 @@ function NavBar() {
           <Link to="/" className={styles.links}>
             <div className={styles.links}>
               <img
-                src="berrymatcha.png"
+                src="/berrymatcha.png"
                 className={styles.logo}
                 alt="image of logo"
                 width={80}

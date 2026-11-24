@@ -3,7 +3,7 @@ import "/loading.gif";
 function Loading() {
   return (
     <img
-      src="loading.gif"
+      src="/loading.gif"
       alt="loading..."
       style={{
         display: "block",

@@ -32,8 +32,6 @@ export const removeCartItem = (cartItemId) =>
     method: "DELETE",
   });
 
-export const getAvailableToppings = () => request("/api/toppings");
-
 export const formatOrderDate = (value) =>
   new Intl.DateTimeFormat("en-US", {
     month: "long",
